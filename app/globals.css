@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #101B3C;
+  --navy-950: #0F1B3D;
+  --navy-900: #101B3C;
+  --navy-800: #1B2C61;
+  --navy-700: #16234D;
+  --navy-600: #1B2440;
+  --blue-500: #2F6FED;
+  --teal-500: #22B8CF;
+  --lavender-300: #B9C4E6;
+  --slate-500: #5B6478;
+  --slate-400: #9AA3B8;
+  --line-200: #E4E7F0;
+  --tint-050: #F6F8FC;
+  --tint-100: #EBF2FF;
+  --tint-200: #D7E5FF;
+  --gold-100: #FFF3D6;
+  --gold-300: #F5DBA0;
+  --gold-700: #8A5A00;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
