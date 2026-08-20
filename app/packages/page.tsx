@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-export const metadata = { title: "Automation Packages | BippiBot" };
+export const metadata = {
+  title: "Automation Packages",
+  description:
+    "Compare BippiBot's automation packages: The Sprint (one-time customer reactivation), The Retainer (monthly AI receptionist and follow-up automation), and the Smart Website add-on.",
+};
 
 export default function PackagesPage() {
   return (

@@ -1,4 +1,7 @@
-export const metadata = { title: "Privacy Policy | BippiBot" };
+export const metadata = {
+  title: "Privacy Policy",
+  description: "How BippiBot (StreamCities, LLC) collects, uses, and protects information submitted through this website.",
+};
 
 const SECTIONS: { h: string; p: string[] }[] = [
   {

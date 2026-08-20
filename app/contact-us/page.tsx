@@ -1,4 +1,8 @@
-export const metadata = { title: "Contact | BippiBot" };
+export const metadata = {
+  title: "Contact",
+  description:
+    "Reach BippiBot by phone, email, or book a free 15-minute consultation with Jay to see whether an automation package or reactivation campaign is right for your business.",
+};
 
 export default function ContactPage() {
   return (

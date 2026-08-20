@@ -1,4 +1,7 @@
-export const metadata = { title: "Terms and Conditions | BippiBot" };
+export const metadata = {
+  title: "Terms and Conditions",
+  description: "The terms and conditions governing use of the BippiBot website, operated by StreamCities, LLC.",
+};
 
 export default function TermsPage() {
   return (

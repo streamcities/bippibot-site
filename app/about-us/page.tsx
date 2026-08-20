@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-export const metadata = { title: "About | BippiBot" };
+export const metadata = {
+  title: "About",
+  description:
+    "BippiBot was founded by James \"Jay\" McCarthy, bringing 25+ years of business experience across Apple, MotorTrend, medical device sales, and running his own wellness clinic — now building practical AI automation for local businesses in Sanibel Island, FL and Las Vegas, NV.",
+};
 
 export default function AboutPage() {
   return (
