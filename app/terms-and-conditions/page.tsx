@@ -48,7 +48,7 @@ export default function TermsPage() {
 
         <div>
           <h2 className="text-lg font-semibold text-[var(--navy-900)]">Governing Law</h2>
-          <p className="mt-2">These terms follow Canadian law, without regard to conflict of law principles.</p>
+          <p className="mt-2">These terms are governed by the laws of the State of Nevada, USA, without regard to conflict of law principles.</p>
         </div>
 
         <div>
