@@ -178,6 +178,28 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-7xl px-6 pb-4">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-gradient-to-br from-[var(--navy-900)] to-[var(--navy-800)] p-8 sm:flex-row sm:items-center sm:p-10">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-[var(--lavender-300)]">
+              For medical practices
+            </p>
+            <h2 className="mt-2 text-2xl font-bold text-white">AI virtual employee</h2>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--lavender-300)]">
+              BippiBot sets up and manages a virtual employee that handles the inbox, follows up on appointment
+              requests, sends reminders, and keeps track of vendors. Starting with practices in Southwest Florida
+              and Las Vegas.
+            </p>
+          </div>
+          <Link
+            href="/virtual-employee"
+            className="inline-flex w-full shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-[var(--blue-500)] to-[var(--teal-500)] px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 sm:w-auto"
+          >
+            See the virtual employee
+          </Link>
+        </div>
+      </section>
+
       {/* New productized services */}
       <section className="mx-auto max-w-7xl px-6 py-20">
         <div className="mx-auto mb-14 max-w-2xl text-center">

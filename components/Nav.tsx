@@ -5,6 +5,7 @@ import { useState } from "react";
 
 const LINKS = [
   { href: "/packages", label: "Automation Packages" },
+  { href: "/virtual-employee", label: "Virtual Employee" },
   { href: "/real-estate-video", label: "Real Estate Video" },
   { href: "/newsletters", label: "Newsletters" },
   { href: "/about-us", label: "About" },
@@ -24,7 +25,7 @@ export default function Nav() {
           <span className="text-lg font-bold tracking-tight text-white">BippiBot</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden items-center gap-8 xl:flex">
           {LINKS.map((l) => (
             <Link
               key={l.href}
@@ -36,7 +37,7 @@ export default function Nav() {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden xl:block">
           <Link
             href="/contact-us"
             className="rounded-full bg-gradient-to-r from-[var(--blue-500)] to-[var(--teal-500)] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:opacity-90"
@@ -47,7 +48,7 @@ export default function Nav() {
 
         <button
           onClick={() => setOpen((o) => !o)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg text-white lg:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-white xl:hidden"
           aria-label="Toggle menu"
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -57,7 +58,7 @@ export default function Nav() {
       </div>
 
       {open && (
-        <div className="border-t border-white/10 bg-[var(--navy-950)] px-6 py-4 lg:hidden">
+        <div className="border-t border-white/10 bg-[var(--navy-950)] px-6 py-4 xl:hidden">
           <nav className="flex flex-col gap-4">
             {LINKS.map((l) => (
               <Link
