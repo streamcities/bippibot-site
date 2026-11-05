@@ -45,6 +45,7 @@ const LOCAL_BUSINESS_JSON_LD = {
     name: "StreamCities, LLC",
   },
   makesOffer: [
+    { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Virtual Employee for Medical Practices" } },
     { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Receptionist & Automation Retainer" } },
     { "@type": "Offer", itemOffered: { "@type": "Service", name: "Customer Reactivation Sprint" } },
     { "@type": "Offer", itemOffered: { "@type": "Service", name: "Real Estate Walkthrough Video" } },

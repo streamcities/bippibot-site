@@ -39,7 +39,10 @@ export default function ContactPage() {
           </div>
         </div>
 
-        <div className="mx-auto mt-14 max-w-2xl rounded-2xl bg-gradient-to-br from-[var(--navy-900)] to-[var(--navy-800)] p-10 text-center text-white">
+        <div
+          id="consultation"
+          className="mx-auto mt-14 max-w-2xl scroll-mt-24 rounded-2xl bg-gradient-to-br from-[var(--navy-900)] to-[var(--navy-800)] p-10 text-center text-white"
+        >
           <h2 className="text-2xl font-bold">Book a Free 15-Minute Consultation with Jay</h2>
           <p className="mt-3 text-[var(--lavender-300)]">
             We&apos;ll look at your customer list and business and tell you honestly whether a reactivation campaign

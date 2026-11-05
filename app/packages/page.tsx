@@ -137,7 +137,12 @@ export default function PackagesPage() {
             <Link href="/newsletters" className="font-semibold text-[var(--blue-500)] hover:underline">
               Client Newsletters
             </Link>{" "}
-            can be started today, no consultation required.
+            can be started today, no consultation required. Medical practices that want a managed virtual employee
+            can read about the{" "}
+            <Link href="/virtual-employee" className="font-semibold text-[var(--blue-500)] hover:underline">
+              AI virtual employee
+            </Link>
+            .
           </p>
         </div>
       </section>

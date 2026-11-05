@@ -21,6 +21,7 @@ export default function Footer() {
             <p className="mb-3 text-sm font-semibold text-white">Services</p>
             <ul className="space-y-2 text-sm">
               <li><Link href="/packages" className="hover:text-white">Automation Packages</Link></li>
+              <li><Link href="/virtual-employee" className="hover:text-white">Virtual Employee</Link></li>
               <li><Link href="/real-estate-video" className="hover:text-white">Real Estate Video</Link></li>
               <li><Link href="/newsletters" className="hover:text-white">Client Newsletters</Link></li>
             </ul>
