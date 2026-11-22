@@ -8,8 +8,7 @@ import Script from "next/script";
  *   NEXT_PUBLIC_CHAT_WIDGET_ID             optional, sent as data-widget-id
  *   NEXT_PUBLIC_CHAT_WIDGET_RESOURCES_URL  optional, sent as data-resources-url
  *
- * (LeadConnector/HighLevel chat uses all three.) NEXT_PUBLIC_* values are read at
- * build time, so redeploy after setting them.
+ * NEXT_PUBLIC_* values are read at build time, so redeploy after setting them.
  */
 export default function ChatWidget() {
   const src = process.env.NEXT_PUBLIC_CHAT_WIDGET_SRC;

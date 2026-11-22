@@ -1,12 +1,16 @@
+import { CONTACT_FORM_ID, ctaHref, ctaTarget } from "@/lib/booking";
+import ContactForm from "./ContactForm";
+
 export const metadata = {
   title: "Contact",
   description:
-    "Reach BippiBot by phone, email, or book a free 15-minute consultation with Jay to see whether an automation package or reactivation campaign is right for your business.",
+    "Reach BippiBot by phone, email, or request a free 15-minute consultation with Jay to see whether an automation package or reactivation campaign is right for your business.",
 };
 
 export default function ContactPage() {
   return (
     <>
+      <style>{`@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}`}</style>
       <section className="bg-[var(--navy-950)] py-20">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h1 className="text-4xl font-bold text-white sm:text-5xl">Let&apos;s talk about your business</h1>
@@ -43,20 +47,22 @@ export default function ContactPage() {
           id="consultation"
           className="mx-auto mt-14 max-w-2xl scroll-mt-24 rounded-2xl bg-gradient-to-br from-[var(--navy-900)] to-[var(--navy-800)] p-10 text-center text-white"
         >
-          <h2 className="text-2xl font-bold">Book a Free 15-Minute Consultation with Jay</h2>
+          <h2 className="text-2xl font-bold">Request a Free 15-Minute Consultation with Jay</h2>
           <p className="mt-3 text-[var(--lavender-300)]">
             We&apos;ll look at your customer list and business and tell you honestly whether a reactivation campaign
             or automation package makes sense for you.
           </p>
           <a
-            href="https://presurgi.com"
-            target="_blank"
-            rel="noopener noreferrer"
+            href={ctaHref(`#${CONTACT_FORM_ID}`, "contact-us", "consultation")}
+            data-cta="contact-consultation"
+            {...ctaTarget()}
             className="mt-6 inline-block rounded-full bg-gradient-to-r from-[var(--blue-500)] to-[var(--teal-500)] px-8 py-4 text-sm font-semibold text-white transition hover:opacity-90"
           >
-            Schedule on Presurgi →
+            Schedule with agent
           </a>
         </div>
+
+        <ContactForm />
 
         <p className="mx-auto mt-10 max-w-2xl text-center text-xs text-[var(--slate-400)]">
           Sanibel Island, FL &middot; Las Vegas, NV
