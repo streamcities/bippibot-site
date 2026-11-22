@@ -102,15 +102,15 @@ const JSON_LD = {
   "@graph": [
     {
       "@type": "Service",
-      "@id": "https://bippibot.com/virtual-employee#service",
+      "@id": "https://www.bippibot.com/virtual-employee#service",
       name: "AI Virtual Employee for Medical Practices",
       serviceType: "AI virtual employee setup and management",
       description: DESCRIPTION,
-      url: "https://bippibot.com/virtual-employee",
+      url: "https://www.bippibot.com/virtual-employee",
       provider: {
         "@type": "ProfessionalService",
         name: "BippiBot",
-        url: "https://bippibot.com",
+        url: "https://www.bippibot.com",
         parentOrganization: {
           "@type": "Organization",
           name: "StreamCities, LLC",
@@ -131,7 +131,7 @@ const JSON_LD = {
     },
     {
       "@type": "FAQPage",
-      "@id": "https://bippibot.com/virtual-employee#faq",
+      "@id": "https://www.bippibot.com/virtual-employee#faq",
       mainEntity: FAQS.map((faq) => ({
         "@type": "Question",
         name: faq.question,

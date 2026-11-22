@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { SITE_NOINDEX } from "@/lib/noindex";
 import ChatWidget from "@/components/ChatWidget";
 
-const SITE_URL = "https://bippibot.com";
+const SITE_URL = "https://www.bippibot.com";
 const TITLE = "BippiBot | The Local Team That Makes Your Business Run on Autopilot";
 const DESCRIPTION =
   "BippiBot builds AI receptionists, customer reactivation campaigns, and automation for local service businesses in Sanibel Island, FL and Las Vegas, NV — plus done-for-you real estate video and client newsletters.";

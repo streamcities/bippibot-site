@@ -13,6 +13,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/"],
       },
     ],
-    sitemap: "https://bippibot.com/sitemap.xml",
+    sitemap: "https://www.bippibot.com/sitemap.xml",
   };
 }

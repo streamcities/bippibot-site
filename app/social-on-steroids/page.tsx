@@ -5,7 +5,7 @@ import StickyCta from "./StickyCta";
 import { bookingUrl } from "./booking";
 import { FAQS, PAGE_DESCRIPTION, PAGE_PATH, PAGE_TITLE } from "./content";
 
-const SITE = "https://bippibot.com";
+const SITE = "https://www.bippibot.com";
 const A = "/social-on-steroids";
 
 export const metadata: Metadata = {
