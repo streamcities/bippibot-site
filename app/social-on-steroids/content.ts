@@ -1,7 +1,30 @@
+import { isComingSoon } from "./features";
+
 export const PAGE_PATH = "/social-on-steroids";
-export const PAGE_TITLE = "Social on Steroids: Listing Marketing for Realtors";
+export const PAGE_TITLE = "Social on Steroids: Listing Marketing That Never Sleeps";
 export const PAGE_DESCRIPTION =
-  "Every new listing gets a tour video, Instagram carousel, open-house flyer, neighborhood guide, social posts, and a just-listed email, built from your listing photos. You approve everything. Book a 15-minute demo.";
+  "For Florida listing agents: every listing gets a tour video, carousel, flyer, neighborhood guide, and Instagram, Facebook, LinkedIn, X and TikTok posts, with a fast turnaround. You approve everything. Book a 15-minute demo.";
+
+const COMING_SOON_FAQS = [
+  ...(isComingSoon("listingMonitoring")
+    ? [
+        {
+          question: "Does the bot spot my new listings on its own?",
+          answer:
+            "Not yet. Automatic new-listing monitoring is coming soon. For now, send us the listing and the bot builds the package from its photos and details.",
+        },
+      ]
+    : []),
+  ...(isComingSoon("listingChatbot")
+    ? [
+        {
+          question: "Is the AI assistant on the listing page live?",
+          answer:
+            "Not yet. The 24/7 AI assistant that answers buyer questions on each listing's landing page is coming soon. We'll show you where it stands on your demo.",
+        },
+      ]
+    : []),
+];
 
 export const FAQS = [
   {
@@ -22,12 +45,14 @@ export const FAQS = [
   {
     question: "How fast is a listing package ready?",
     answer:
-      "Fast. The bot starts building as soon as a new listing goes live, and you get the package to review well before you would have time to make it yourself. We'll confirm the exact turnaround on your demo.",
+      isComingSoon("listingMonitoring")
+        ? "Fast. Send us the listing and the bot builds the package, so you have it to review well before you would have time to make it yourself. We'll confirm the exact turnaround on your demo."
+        : "Fast. The bot starts building as soon as a new listing goes live, so you have the package to review well before you would have time to make it yourself. We'll confirm the exact turnaround on your demo.",
   },
   {
     question: "What does it cost?",
     answer:
-      "Setup is $495 one time. Monitoring is $395 per agent per month. Each listing package is $295, or $495 for listings at $1M and up. Founding agents get setup waived and their first listing package free. Month to month after setup, with no long contract.",
+      "Setup is $495 one time. The monthly service is $395 per agent. Each listing package is $295, or $495 for listings at $1M and up. Founding agents get setup waived and their first listing package free. Month to month after setup, with no long contract.",
   },
   {
     question: "Is ad spend included?",
@@ -44,4 +69,5 @@ export const FAQS = [
     answer:
       "A branded email to your past clients and sphere every month: a local market snapshot, your new listings and solds, area happenings, and a 'thinking of selling?' prompt. You approve it before it sends. $149 a month at the founding rate.",
   },
+  ...COMING_SOON_FAQS,
 ];

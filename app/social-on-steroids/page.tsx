@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import DemoForm from "./DemoForm";
 import StickyCta from "./StickyCta";
+import ComingSoon from "./ComingSoon";
+import { isComingSoon } from "./features";
 import { bookingUrl } from "./booking";
 import { FAQS, PAGE_DESCRIPTION, PAGE_PATH, PAGE_TITLE } from "./content";
 
@@ -15,14 +17,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "BippiBot",
-    title: "Social on Steroids: every listing marketed like a luxury launch",
+    title: "Your bot never sleeps: Social on Steroids for Florida listing agents",
     description: PAGE_DESCRIPTION,
     url: PAGE_PATH,
     images: [{ url: `${A}/og.jpg`, width: 1200, height: 630, alt: "One listing becomes a tour video, carousel, flyer, and neighborhood guide" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Social on Steroids: every listing marketed like a luxury launch",
+    title: "Your bot never sleeps: Social on Steroids for Florida listing agents",
     description: PAGE_DESCRIPTION,
     images: [`${A}/og.jpg`],
   },
@@ -107,6 +109,7 @@ const OUTPUTS = [
   { icon: "💬", t: "5 social captions", d: "Ready to post" },
   { icon: "✍️", t: "Listing description", d: "Polished and improved" },
   { icon: "📧", t: "Just-listed email", d: "For your buyer list" },
+  { icon: "🏠", t: "Listing landing page", d: "Every post links here" },
 ];
 
 const CAROUSEL = ["01", "02", "03", "04", "05", "06"];
@@ -122,12 +125,16 @@ export default function SocialOnSteroidsPage() {
         <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-[#D63D1A]/20 blur-3xl" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 pb-14 pt-10 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pb-20 lg:pt-16">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF5A36]">For busy Florida listing agents</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF5A36]">Social on Steroids · for Florida listing agents</p>
             <h1 className="mt-3 text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
-              Social on <span className="text-[#FF5A36]">Steroids</span>
+              Your bot <span className="text-[#FF5A36]">never sleeps.</span>
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#E6ECF5] sm:text-xl">
-              Every new listing gets a tour video, carousel, flyer, neighborhood guide, posts, and a just-listed email, done for you with a fast turnaround. <strong className="text-white">You just tap Approve.</strong>
+              The minute a listing goes live<ComingSoon feature="listingMonitoring" />, it builds your Instagram, Facebook, LinkedIn, X and TikTok posts and sends buyers to that listing&apos;s own landing page, where an AI assistant answers their questions 24/7<ComingSoon feature="listingChatbot" />.
+            </p>
+            <p className="mt-3 max-w-xl text-base leading-relaxed text-[#C9D3E4]">
+              {isComingSoon("listingMonitoring") ? "Today: send us the listing and the bot builds the whole package with a fast turnaround. " : "The whole package arrives with a fast turnaround. "}
+              <strong className="text-white">You just tap Approve.</strong>
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Cta placement="hero" />
@@ -157,9 +164,9 @@ export default function SocialOnSteroidsPage() {
               <p className="px-2 py-1 text-[10px] font-bold text-[#0B1D3A]">Open-house flyer</p>
             </div>
             <div className="absolute bottom-0 left-2 z-20 rounded-2xl bg-white px-4 py-3 text-[#0B1D3A] shadow-xl">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-[#5A6884]">New listing detected</p>
+              <p className="text-[11px] font-bold uppercase tracking-wide text-[#5A6884]">Listing package</p>
               <p className="mt-1 flex items-center gap-2 text-sm font-extrabold">
-                7 pieces ready <span className="rounded-full bg-[#D63D1A] px-2.5 py-1 text-xs text-white">Approve</span>
+                Ready to review <span className="rounded-full bg-[#D63D1A] px-2.5 py-1 text-xs text-white">Approve</span>
               </p>
             </div>
           </div>
@@ -170,10 +177,10 @@ export default function SocialOnSteroidsPage() {
       <section className="border-b border-[var(--line-200)] bg-[#F2F5FA]">
         <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-6 md:grid-cols-2">
           <p className="border-l-4 border-[#FF5A36] pl-4 text-lg text-[#0E1B33]">
-            <strong>You don&apos;t have time to market every listing well.</strong> Most get one just-listed post, then go quiet. Sellers notice.
+            <strong>Your listing gets one post, then goes quiet.</strong> Not because anyone&apos;s lazy, but because nobody has time to build the whole package for every listing.
           </p>
           <p className="border-l-4 border-[#FF5A36] pl-4 text-lg text-[#0E1B33]">
-            <strong>Your listing deserves your own spotlight.</strong> Your page, posts, comments, and DMs route inquiries straight to you.
+            <strong>The bot builds it every time.</strong> Video, carousel, flyer, guide, and posts for each listing, under your brand, with inquiries from comments and DMs routed straight to you.
           </p>
         </div>
       </section>
@@ -280,7 +287,7 @@ export default function SocialOnSteroidsPage() {
           <div className="rounded-3xl border border-[var(--line-200)] p-6">
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#C43A18]">For every new listing</p>
             <ul className="mt-4 space-y-3 text-[#0E1B33]">
-              {["Vertical tour video from the listing photos", "Photo carousel for Instagram and Facebook", "Open-house flyer with a QR code to the listing", "Neighborhood guide for out-of-town buyers", "Five ready-to-post social captions", "An improved listing description", "A just-listed email for your buyer list"].map((t) => (
+              {["Vertical tour video from the listing photos", "Photo carousel for Instagram and Facebook", "Open-house flyer with a QR code to the listing", "Neighborhood guide for out-of-town buyers", "Five ready-to-post social captions", "An improved listing description", "A just-listed email for your buyer list", "A landing page for the listing that every post links to"].map((t) => (
                 <li key={t} className="flex gap-3"><Check />{t}</li>
               ))}
             </ul>
@@ -288,7 +295,9 @@ export default function SocialOnSteroidsPage() {
           <div className="rounded-3xl border border-[var(--line-200)] p-6">
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#C43A18]">While it&apos;s live, and between listings</p>
             <ul className="mt-4 space-y-3 text-[#0E1B33]">
-              {["The bot watches for each new listing", "Price-drop, open-house, under-contract, and just-sold posts", "A weekly seller report you can forward", "Comments and DMs routed to you", "Drafted open-house follow-ups, ready to send", "A monthly local market recap, so your feed stays active"].map((t) => (
+              <li className="flex gap-3"><Check /><span>The bot spots each new listing on its own<ComingSoon feature="listingMonitoring" /></span></li>
+              <li className="flex gap-3"><Check /><span>A 24/7 AI assistant on the listing page answers buyer questions<ComingSoon feature="listingChatbot" /></span></li>
+              {["Price-drop, open-house, under-contract, and just-sold posts", "A weekly seller report you can forward", "Comments and DMs routed to you", "Drafted open-house follow-ups, ready to send", "A monthly local market recap, so your feed stays active"].map((t) => (
                 <li key={t} className="flex gap-3"><Check />{t}</li>
               ))}
             </ul>
@@ -303,7 +312,9 @@ export default function SocialOnSteroidsPage() {
           <h2 className="text-center text-3xl font-black tracking-tight sm:text-5xl">How it works</h2>
           <ol className="mt-10 grid gap-5 md:grid-cols-3">
             {[
-              ["A new listing goes live", "The bot picks it up and builds the full marketing package from your photos and listing details."],
+              isComingSoon("listingMonitoring")
+                ? ["You send us the listing", "The bot builds the full marketing package from your photos and listing details. Automatic pickup of new listings is coming soon."]
+                : ["A new listing goes live", "The bot picks it up and builds the full marketing package from your photos and listing details."],
               ["You review and tap Approve", "Nothing posts or sends until you say yes. You stay compliant, and your brokerage stays comfortable."],
               ["The campaign runs", "Approved posts go out on schedule. Status changes, seller reports, inquiries, and follow-ups are handled for you."],
             ].map(([t, d], i) => (
@@ -334,13 +345,13 @@ export default function SocialOnSteroidsPage() {
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#5A6884]">Setup · one time</p>
             <p className="mt-2 text-5xl font-black text-[#0B1D3A]">$495</p>
             <p className="mt-1 text-sm font-extrabold text-[#C43A18]">Waived for founding agents</p>
-            <p className="mt-3 text-sm text-[#5A6884]">Brand kit, channel connection, brokerage disclosure line, listing watch, and the approval workflow.</p>
+            <p className="mt-3 text-sm text-[#5A6884]">Brand kit, channel connection, brokerage disclosure line, and the approval workflow.</p>
           </div>
           <div className="relative rounded-3xl border-2 border-[#0B1D3A] bg-white p-6 shadow-xl">
             <span className="absolute -top-3 left-6 rounded-full bg-[#0B1D3A] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">The engine</span>
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#5A6884]">Monthly · per agent</p>
             <p className="mt-2 text-5xl font-black text-[#0B1D3A]">$395<span className="text-lg font-bold text-[#5A6884]">/mo</span></p>
-            <p className="mt-3 text-sm text-[#5A6884]">Listing monitoring, approval-required scheduling, status-change posts, weekly seller reports, comment and DM routing, open-house follow-up drafts, and the monthly market recap.</p>
+            <p className="mt-3 text-sm text-[#5A6884]">Approval-required scheduling, status-change posts, weekly seller reports, comment and DM routing, open-house follow-up drafts, and the monthly market recap, plus automatic listing monitoring<ComingSoon feature="listingMonitoring" />.</p>
           </div>
           <div className="rounded-3xl border border-[var(--line-200)] bg-[#F2F5FA] p-6">
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#5A6884]">Per listing</p>
