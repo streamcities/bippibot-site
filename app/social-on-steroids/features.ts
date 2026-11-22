@@ -10,7 +10,7 @@ export const FEATURES = {
   /** The bot noticing on its own that a new listing went live. */
   listingMonitoring: { comingSoon: true },
   /** The 24/7 AI assistant on each listing's landing page. */
-  listingChatbot: { comingSoon: true },
+  listingChatbot: { comingSoon: false },
 } as const;
 
 export type FeatureKey = keyof typeof FEATURES;
