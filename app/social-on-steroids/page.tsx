@@ -4,7 +4,7 @@ import DemoForm from "./DemoForm";
 import StickyCta from "./StickyCta";
 import ComingSoon from "./ComingSoon";
 import { isComingSoon } from "./features";
-import { bookingUrl } from "./booking";
+import { ctaHref, ctaTarget } from "./booking";
 import { FAQS, PAGE_DESCRIPTION, PAGE_PATH, PAGE_TITLE } from "./content";
 
 const SITE = "https://www.bippibot.com";
@@ -86,10 +86,9 @@ function Cta({
 }) {
   return (
     <a
-      href={bookingUrl(placement)}
+      href={ctaHref(placement)}
       data-cta={placement}
-      target="_blank"
-      rel="noopener"
+      {...ctaTarget()}
       className={`inline-flex items-center justify-center rounded-full bg-[#D63D1A] px-7 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5 hover:bg-[#B93515] ${className}`}
     >
       {children}
@@ -118,7 +117,7 @@ export default function SocialOnSteroidsPage() {
   return (
     <div className="bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <style>{`@media (max-width:1023px){body{padding-bottom:76px}} #showcase,#how,#pricing,#faq,#demo{scroll-margin-top:84px}`}</style>
+      <style>{`@media (max-width:1023px){body{padding-bottom:76px}} @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}} #showcase,#how,#pricing,#faq,#demo{scroll-margin-top:84px} #demo-form{scroll-margin-top:96px}`}</style>
 
       {/* HERO */}
       <section className="relative overflow-hidden bg-[#0B1D3A] text-white">
@@ -409,8 +408,7 @@ export default function SocialOnSteroidsPage() {
               <li className="flex gap-3"><Check />Copy describes the property, never the buyer</li>
               <li className="flex gap-3"><Check />Your brand on everything, not ours</li>
             </ul>
-            <div className="mt-8"><Cta placement="demo-section">Pick a time on Jay&apos;s calendar</Cta></div>
-            <p className="mt-3 text-sm text-[#C9D3E4]">Prefer we reach out? Send a request with the form instead.</p>
+            <div className="mt-8 lg:hidden"><Cta placement="demo-section">Fill in the form ↓</Cta></div>
           </div>
           <DemoForm />
         </div>

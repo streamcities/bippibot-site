@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { DEMO_FORM_ID } from "./booking";
 
 const TRACK_KEYS = [
   "utm_source",
@@ -60,8 +61,18 @@ export default function DemoForm() {
   const [serverError, setServerError] = useState<string | null>(null);
   const attribution = useRef<Attribution>({});
 
+  const lastCta = useRef<string>("");
+
   useEffect(() => {
     attribution.current = readAttribution();
+    // Remember which on-page CTA brought the visitor to the form (hero, pricing, sticky-mobile...).
+    const onClick = (e: MouseEvent) => {
+      const el = (e.target as Element | null)?.closest?.("[data-cta]");
+      const v = el?.getAttribute("data-cta");
+      if (v) lastCta.current = v.slice(0, 60);
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, []);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -86,7 +97,8 @@ export default function DemoForm() {
     const [first_name, ...rest] = fullName.split(" ");
     const brokerage = String(data.get("brokerage") || "").trim();
     const message = String(data.get("message") || "").trim();
-    const attr = { ...attribution.current, ...readAttribution() };
+    const attr: Record<string, string> = { ...attribution.current, ...readAttribution() } as Record<string, string>;
+    if (lastCta.current) attr.cta = lastCta.current;
     const tracking = Object.entries(attr)
       .filter(([, v]) => v)
       .map(([k, v]) => `${k}=${v}`)
@@ -133,7 +145,7 @@ export default function DemoForm() {
 
   if (status === "sent") {
     return (
-      <div role="status" className="rounded-3xl bg-white p-8 text-center text-[var(--navy-900)] shadow-2xl">
+      <div id={DEMO_FORM_ID} role="status" className="rounded-3xl bg-white p-8 text-center text-[var(--navy-900)] shadow-2xl">
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#D63D1A] text-2xl text-white">✓</div>
         <h3 className="text-2xl font-extrabold">Request received</h3>
         <p className="mt-2 text-[var(--slate-500)]">Jay will reach out to pick a time for your 15-minute demo.</p>
@@ -150,6 +162,7 @@ export default function DemoForm() {
 
   return (
     <form
+      id={DEMO_FORM_ID}
       noValidate
       onSubmit={onSubmit}
       className="relative rounded-3xl bg-white p-6 text-[var(--navy-900)] shadow-2xl sm:p-8"
@@ -161,8 +174,8 @@ export default function DemoForm() {
           <input tabIndex={-1} autoComplete="off" name="company_website" defaultValue="" />
         </label>
       </div>
-      <h3 className="text-2xl font-extrabold">Request a demo</h3>
-      <p className="mt-1 text-sm text-[var(--slate-500)]">Leave your details and Jay will contact you to set up your 15-minute demo.</p>
+      <h3 className="text-2xl font-extrabold">Request your 15-minute demo</h3>
+      <p className="mt-1 text-sm text-[var(--slate-500)]">Tell us about your listings and we&apos;ll reach out to set up your 15-minute demo.</p>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
