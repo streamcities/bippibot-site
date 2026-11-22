@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import DemoForm from "./DemoForm";
 import StickyCta from "./StickyCta";
+import { bookingUrl } from "./booking";
 import { FAQS, PAGE_DESCRIPTION, PAGE_PATH, PAGE_TITLE } from "./content";
 
 const SITE = "https://bippibot.com";
@@ -72,17 +73,19 @@ const JSON_LD = {
   ],
 };
 
-/** Visible review marker. Must be resolved before production launch. */
-function Flag({ children }: { children: React.ReactNode }) {
-  return (
-    <mark className="rounded bg-yellow-200 px-1.5 py-0.5 text-[0.8em] font-bold text-yellow-900">{children}</mark>
-  );
-}
-
-function Cta({ className = "", children = "Book a 15-minute demo" }: { className?: string; children?: React.ReactNode }) {
+function Cta({
+  className = "",
+  children = "Book a 15-minute demo",
+  placement,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+  placement: string;
+}) {
   return (
     <a
-      href="#demo"
+      href={bookingUrl(placement)}
+      data-cta={placement}
       className={`inline-flex items-center justify-center rounded-full bg-[#D63D1A] px-7 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5 hover:bg-[#B93515] ${className}`}
     >
       {children}
@@ -117,7 +120,7 @@ export default function SocialOnSteroidsPage() {
         <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-[#D63D1A]/20 blur-3xl" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 pb-14 pt-10 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pb-20 lg:pt-16">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF5A36]">For busy Southwest Florida listing agents</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF5A36]">For busy Florida listing agents</p>
             <h1 className="mt-3 text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
               Social on <span className="text-[#FF5A36]">Steroids</span>
             </h1>
@@ -125,7 +128,7 @@ export default function SocialOnSteroidsPage() {
               Every new listing gets a tour video, carousel, flyer, neighborhood guide, posts, and a just-listed email, done for you with a fast turnaround. <strong className="text-white">You just tap Approve.</strong>
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Cta />
+              <Cta placement="hero" />
               <a href="#showcase" className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-4 text-base font-bold text-white transition hover:bg-white/10">
                 See real sample work ↓
               </a>
@@ -264,7 +267,7 @@ export default function SocialOnSteroidsPage() {
               </div>
             </div>
           </div>
-          <div className="mt-10 text-center"><Cta>See it for your next listing</Cta></div>
+          <div className="mt-10 text-center"><Cta placement="showcase">See it for your next listing</Cta></div>
         </div>
       </section>
 
@@ -358,6 +361,7 @@ export default function SocialOnSteroidsPage() {
         <p className="mt-5 text-center text-sm text-[#5A6884]">
           What an active month costs at standard rates: one standard listing, <strong>$690</strong>. One luxury listing, <strong>$890</strong>.
         </p>
+        <div className="mt-8 text-center"><Cta placement="pricing">Book a 15-minute demo</Cta></div>
       </section>
 
       {/* FAQ */}
@@ -375,9 +379,6 @@ export default function SocialOnSteroidsPage() {
               </details>
             ))}
           </div>
-          <p className="mt-6 text-center text-xs text-[#5A6884]">
-            Review note: turnaround is described as &ldquo;fast&rdquo; on this page. <Flag>[FOR JAY TO CONFIRM: &ldquo;marketed in 24 hours&rdquo;]</Flag>
-          </p>
         </div>
       </section>
 
@@ -395,6 +396,8 @@ export default function SocialOnSteroidsPage() {
               <li className="flex gap-3"><Check />Copy describes the property, never the buyer</li>
               <li className="flex gap-3"><Check />Your brand on everything, not ours</li>
             </ul>
+            <div className="mt-8"><Cta placement="demo-section">Pick a time on Jay&apos;s calendar</Cta></div>
+            <p className="mt-3 text-sm text-[#C9D3E4]">Prefer we reach out? Send a request with the form instead.</p>
           </div>
           <DemoForm />
         </div>

@@ -153,7 +153,7 @@ export default function DemoForm() {
       noValidate
       onSubmit={onSubmit}
       className="relative rounded-3xl bg-white p-6 text-[var(--navy-900)] shadow-2xl sm:p-8"
-      aria-label="Book a 15-minute demo"
+      aria-label="Request a demo"
     >
       <div className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0" aria-hidden="true">
         <label>
@@ -161,8 +161,8 @@ export default function DemoForm() {
           <input tabIndex={-1} autoComplete="off" name="company_website" defaultValue="" />
         </label>
       </div>
-      <h3 className="text-2xl font-extrabold">Book a 15-minute demo</h3>
-      <p className="mt-1 text-sm text-[var(--slate-500)]">With Jay McCarthy, founder of BippiBot. We&apos;ll walk through a real listing package.</p>
+      <h3 className="text-2xl font-extrabold">Request a demo</h3>
+      <p className="mt-1 text-sm text-[var(--slate-500)]">Leave your details and Jay will contact you to set up your 15-minute demo.</p>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
@@ -207,7 +207,7 @@ export default function DemoForm() {
         aria-busy={status === "sending"}
         className="mt-5 w-full rounded-full bg-[#D63D1A] px-6 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:bg-[#B93515] disabled:opacity-60"
       >
-        {status === "sending" ? "Sending…" : "Book my 15-minute demo"}
+        {status === "sending" ? "Sending…" : "Send my demo request"}
       </button>
       <p className="mt-3 text-xs leading-relaxed text-[var(--slate-500)]">
         We&apos;ll only use this to set up your demo and follow up about BippiBot. We don&apos;t sell your information.{" "}
