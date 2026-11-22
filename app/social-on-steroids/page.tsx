@@ -83,7 +83,7 @@ function Cta({ className = "", children = "Book a 15-minute demo" }: { className
   return (
     <a
       href="#demo"
-      className={`inline-flex items-center justify-center rounded-full bg-[#FF5A36] px-7 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5 hover:bg-[#ec4a27] ${className}`}
+      className={`inline-flex items-center justify-center rounded-full bg-[#D63D1A] px-7 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5 hover:bg-[#B93515] ${className}`}
     >
       {children}
     </a>
@@ -91,7 +91,7 @@ function Cta({ className = "", children = "Book a 15-minute demo" }: { className
 }
 
 const Check = () => (
-  <span aria-hidden className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[#FF5A36] text-[11px] font-black text-white">✓</span>
+  <span aria-hidden className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[#D63D1A] text-[11px] font-black text-white">✓</span>
 );
 
 const OUTPUTS = [
@@ -114,7 +114,7 @@ export default function SocialOnSteroidsPage() {
 
       {/* HERO */}
       <section className="relative overflow-hidden bg-[#0B1D3A] text-white">
-        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-[#FF5A36]/20 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-[#D63D1A]/20 blur-3xl" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 pb-14 pt-10 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pb-20 lg:pt-16">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF5A36]">For busy Southwest Florida listing agents</p>
@@ -141,7 +141,7 @@ export default function SocialOnSteroidsPage() {
           <div className="relative mx-auto h-[440px] w-full max-w-[460px] sm:h-[520px]">
             <div className="absolute left-1/2 top-0 z-10 w-[200px] -translate-x-1/2 overflow-hidden rounded-[2rem] border-[6px] border-[#1d2c4a] bg-black shadow-2xl sm:w-[236px]">
               <Image src={`${A}/tour-poster.webp`} alt="Frame from a vertical listing tour video" width={540} height={960} priority sizes="236px" className="h-auto w-full" />
-              <span className="absolute left-3 top-14 rounded-full bg-[#FF5A36] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide">▶ Tour video</span>
+              <span className="absolute left-3 top-14 rounded-full bg-[#D63D1A] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide">▶ Tour video</span>
             </div>
             <div className="absolute left-0 top-16 w-[140px] -rotate-6 overflow-hidden rounded-xl bg-white shadow-xl sm:w-[168px]">
               <Image src={`${A}/carousel-05.webp`} alt="Instagram carousel slide" width={640} height={800} sizes="168px" className="h-auto w-full" />
@@ -154,7 +154,7 @@ export default function SocialOnSteroidsPage() {
             <div className="absolute bottom-0 left-2 z-20 rounded-2xl bg-white px-4 py-3 text-[#0B1D3A] shadow-xl">
               <p className="text-[11px] font-bold uppercase tracking-wide text-[#5A6884]">New listing detected</p>
               <p className="mt-1 flex items-center gap-2 text-sm font-extrabold">
-                7 pieces ready <span className="rounded-full bg-[#FF5A36] px-2.5 py-1 text-xs text-white">Approve</span>
+                7 pieces ready <span className="rounded-full bg-[#D63D1A] px-2.5 py-1 text-xs text-white">Approve</span>
               </p>
             </div>
           </div>
@@ -176,7 +176,7 @@ export default function SocialOnSteroidsPage() {
       {/* ONE LISTING BECOMES ALL THIS */}
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:py-24">
         <div className="text-center">
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF5A36]">Before → After</p>
+          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C43A18]">Before → After</p>
           <h2 className="mt-2 text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">One listing becomes all this</h2>
         </div>
         <div className="mt-10 grid items-center gap-6 lg:grid-cols-[1fr_auto_1.6fr]">
@@ -185,7 +185,7 @@ export default function SocialOnSteroidsPage() {
             <Image src={`${A}/photo-01.webp`} alt="A single listing photo of a Sanibel home" width={960} height={640} sizes="(min-width:1024px) 360px, 100vw" className="h-auto w-full rounded-2xl" />
             <p className="mt-3 text-sm text-[#5A6884]">Listing photos + MLS details. No shoot, no drone, no editor.</p>
           </div>
-          <div aria-hidden className="mx-auto flex h-14 w-14 rotate-90 items-center justify-center rounded-full bg-[#FF5A36] text-2xl font-black text-white shadow-lg lg:rotate-0">→</div>
+          <div aria-hidden className="mx-auto flex h-14 w-14 rotate-90 items-center justify-center rounded-full bg-[#D63D1A] text-2xl font-black text-white shadow-lg lg:rotate-0">→</div>
           <div className="rounded-3xl bg-[#0B1D3A] p-5 text-white shadow-xl">
             <p className="mb-4 text-xs font-extrabold uppercase tracking-widest text-[#FF5A36]">After: your listing launch kit</p>
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -196,9 +196,9 @@ export default function SocialOnSteroidsPage() {
                   <p className="text-xs text-[#B9C4D8]">{o.d}</p>
                 </li>
               ))}
-              <li className="flex flex-col justify-center rounded-2xl bg-[#FF5A36] p-3">
+              <li className="flex flex-col justify-center rounded-2xl bg-[#D63D1A] p-3">
                 <p className="text-sm font-extrabold">+ status posts</p>
-                <p className="text-xs text-white/90">Price improved, open house, under contract, sold</p>
+                <p className="text-xs text-white">Price improved, open house, under contract, sold</p>
               </li>
             </ul>
           </div>
@@ -209,7 +209,7 @@ export default function SocialOnSteroidsPage() {
       <section id="showcase" className="bg-[#F2F5FA] py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="max-w-3xl">
-            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF5A36]">Real sample work</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C43A18]">Real sample work</p>
             <h2 className="mt-2 text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">Built for a $3,495,000 Sanibel listing</h2>
             <p className="mt-3 text-lg text-[#5A6884]">
               A home across the street from the Gulf, built from the live listing&apos;s photos. Agent branding is swapped for a &ldquo;Your logo&rdquo; placeholder here. Nothing was posted.
@@ -273,7 +273,7 @@ export default function SocialOnSteroidsPage() {
         <h2 className="text-center text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">Launch it. Then keep it moving.</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           <div className="rounded-3xl border border-[var(--line-200)] p-6">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-[#FF5A36]">For every new listing</p>
+            <p className="text-xs font-extrabold uppercase tracking-widest text-[#C43A18]">For every new listing</p>
             <ul className="mt-4 space-y-3 text-[#0E1B33]">
               {["Vertical tour video from the listing photos", "Photo carousel for Instagram and Facebook", "Open-house flyer with a QR code to the listing", "Neighborhood guide for out-of-town buyers", "Five ready-to-post social captions", "An improved listing description", "A just-listed email for your buyer list"].map((t) => (
                 <li key={t} className="flex gap-3"><Check />{t}</li>
@@ -281,7 +281,7 @@ export default function SocialOnSteroidsPage() {
             </ul>
           </div>
           <div className="rounded-3xl border border-[var(--line-200)] p-6">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-[#FF5A36]">While it&apos;s live, and between listings</p>
+            <p className="text-xs font-extrabold uppercase tracking-widest text-[#C43A18]">While it&apos;s live, and between listings</p>
             <ul className="mt-4 space-y-3 text-[#0E1B33]">
               {["The bot watches for each new listing", "Price-drop, open-house, under-contract, and just-sold posts", "A weekly seller report you can forward", "Comments and DMs routed to you", "Drafted open-house follow-ups, ready to send", "A monthly local market recap, so your feed stays active"].map((t) => (
                 <li key={t} className="flex gap-3"><Check />{t}</li>
@@ -303,7 +303,7 @@ export default function SocialOnSteroidsPage() {
               ["The campaign runs", "Approved posts go out on schedule. Status changes, seller reports, inquiries, and follow-ups are handled for you."],
             ].map(([t, d], i) => (
               <li key={t} className="rounded-3xl bg-white/[0.06] p-6 ring-1 ring-white/10">
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FF5A36] text-lg font-black">{i + 1}</span>
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D63D1A] text-lg font-black">{i + 1}</span>
                 <h3 className="mt-4 text-xl font-extrabold">{t}</h3>
                 <p className="mt-2 text-[#B9C4D8]">{d}</p>
               </li>
@@ -315,20 +315,20 @@ export default function SocialOnSteroidsPage() {
       {/* PRICING */}
       <section id="pricing" className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:py-24">
         <div className="text-center">
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF5A36]">Simple pricing</p>
+          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C43A18]">Simple pricing</p>
           <h2 className="mt-2 text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">Month to month. No long contract.</h2>
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-3 rounded-3xl bg-[#FF5A36] px-6 py-5 text-center text-white shadow-lg sm:flex-row sm:text-left">
+        <div className="mt-8 flex flex-col items-center justify-between gap-3 rounded-3xl bg-[#D63D1A] px-6 py-5 text-center text-white shadow-lg sm:flex-row sm:text-left">
           <p className="text-lg font-black sm:text-xl">Founding-agent offer: setup waived + your first listing free.</p>
-          <p className="text-sm font-semibold text-white/90">Standard rates after that.</p>
+          <p className="text-sm font-semibold text-white">Standard rates after that.</p>
         </div>
 
         <div className="mt-6 grid gap-5 md:grid-cols-3">
           <div className="rounded-3xl border border-[var(--line-200)] bg-[#F2F5FA] p-6">
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#5A6884]">Setup · one time</p>
             <p className="mt-2 text-5xl font-black text-[#0B1D3A]">$495</p>
-            <p className="mt-1 text-sm font-extrabold text-[#FF5A36]">Waived for founding agents</p>
+            <p className="mt-1 text-sm font-extrabold text-[#C43A18]">Waived for founding agents</p>
             <p className="mt-3 text-sm text-[#5A6884]">Brand kit, channel connection, brokerage disclosure line, listing watch, and the approval workflow.</p>
           </div>
           <div className="relative rounded-3xl border-2 border-[#0B1D3A] bg-white p-6 shadow-xl">
@@ -341,7 +341,7 @@ export default function SocialOnSteroidsPage() {
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#5A6884]">Per listing</p>
             <p className="mt-2 text-5xl font-black text-[#0B1D3A]">$295</p>
             <p className="mt-1 text-sm font-extrabold text-[#0B1D3A]">$495 for listings $1M and up</p>
-            <p className="mt-1 text-sm font-extrabold text-[#FF5A36]">First listing free for founding agents</p>
+            <p className="mt-1 text-sm font-extrabold text-[#C43A18]">First listing free for founding agents</p>
             <p className="mt-3 text-sm text-[#5A6884]">The full package. Luxury adds a deeper neighborhood guide and the complete price-change and still-available post set.</p>
           </div>
         </div>
@@ -369,7 +369,7 @@ export default function SocialOnSteroidsPage() {
               <details key={f.question} className="group rounded-2xl bg-white p-5 shadow-sm open:shadow-md">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-extrabold text-[#0B1D3A]">
                   {f.question}
-                  <span aria-hidden className="text-xl text-[#FF5A36] transition group-open:rotate-45">+</span>
+                  <span aria-hidden className="text-xl text-[#C43A18] transition group-open:rotate-45">+</span>
                 </summary>
                 <p className="mt-3 text-[#5A6884]">{f.answer}</p>
               </details>
@@ -383,7 +383,7 @@ export default function SocialOnSteroidsPage() {
 
       {/* DEMO FORM */}
       <section id="demo" className="relative overflow-hidden bg-[#0B1D3A] py-16 text-white lg:py-24">
-        <div aria-hidden className="pointer-events-none absolute -left-40 bottom-0 h-[480px] w-[480px] rounded-full bg-[#FF5A36]/20 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -left-40 bottom-0 h-[480px] w-[480px] rounded-full bg-[#D63D1A]/20 blur-3xl" />
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 sm:px-6 lg:grid-cols-2">
           <div>
             <h2 className="text-4xl font-black leading-tight tracking-tight sm:text-5xl">

@@ -39,7 +39,7 @@ function readAttribution(): Attribution {
 }
 
 const input =
-  "mt-1.5 w-full rounded-xl border border-[var(--line-200)] bg-white px-3.5 py-3 text-base text-[var(--navy-900)] outline-none placeholder:text-[var(--slate-400)] focus:border-[#FF5A36] focus:shadow-[0_0_0_3px_rgba(255,90,54,0.18)] aria-[invalid=true]:border-red-500";
+  "mt-1.5 w-full rounded-xl border border-[var(--line-200)] bg-white px-3.5 py-3 text-base text-[var(--navy-900)] outline-none placeholder:text-[var(--slate-500)] focus:border-[#D63D1A] focus:shadow-[0_0_0_3px_rgba(255,90,54,0.18)] aria-[invalid=true]:border-red-500";
 
 type Errors = Partial<Record<"name" | "email" | "phone", string>>;
 
@@ -134,7 +134,7 @@ export default function DemoForm() {
   if (status === "sent") {
     return (
       <div role="status" className="rounded-3xl bg-white p-8 text-center text-[var(--navy-900)] shadow-2xl">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#FF5A36] text-2xl text-white">✓</div>
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#D63D1A] text-2xl text-white">✓</div>
         <h3 className="text-2xl font-extrabold">Request received</h3>
         <p className="mt-2 text-[var(--slate-500)]">Jay will reach out to pick a time for your 15-minute demo.</p>
       </div>
@@ -185,13 +185,13 @@ export default function DemoForm() {
         </div>
         <div className="sm:col-span-2">
           <label htmlFor="sos-brokerage" className="block text-sm font-semibold">
-            Brokerage <span className="font-medium text-[var(--slate-400)]">(optional)</span>
+            Brokerage <span className="font-medium text-[var(--slate-500)]">(optional)</span>
           </label>
           <input id="sos-brokerage" name="brokerage" maxLength={120} autoComplete="organization" placeholder="Your brokerage" className={input} />
         </div>
         <div className="sm:col-span-2">
           <label htmlFor="sos-message" className="block text-sm font-semibold">
-            Message <span className="font-medium text-[var(--slate-400)]">(optional)</span>
+            Message <span className="font-medium text-[var(--slate-500)]">(optional)</span>
           </label>
           <textarea id="sos-message" name="message" rows={3} maxLength={1500} placeholder="How many listings do you take a year? Anything we should know?" className={input} />
         </div>
@@ -205,7 +205,7 @@ export default function DemoForm() {
         type="submit"
         disabled={status === "sending"}
         aria-busy={status === "sending"}
-        className="mt-5 w-full rounded-full bg-[#FF5A36] px-6 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:bg-[#ec4a27] disabled:opacity-60"
+        className="mt-5 w-full rounded-full bg-[#D63D1A] px-6 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:bg-[#B93515] disabled:opacity-60"
       >
         {status === "sending" ? "Sending…" : "Book my 15-minute demo"}
       </button>
