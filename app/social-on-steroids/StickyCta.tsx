@@ -37,7 +37,7 @@ export default function StickyCta() {
             <p className="truncate text-sm font-extrabold">Social on Steroids</p>
             <p className="truncate text-xs text-[#B9C4D8]">Founding offer: setup waived</p>
           </div>
-          <a href={bookingUrl("sticky-mobile")} data-cta="sticky-mobile" tabIndex={show ? 0 : -1} className="flex-none rounded-full bg-[#D63D1A] px-5 py-3 text-sm font-extrabold text-white">
+          <a href={bookingUrl("sticky-mobile")} data-cta="sticky-mobile" target="_blank" rel="noopener" tabIndex={show ? 0 : -1} className="flex-none rounded-full bg-[#D63D1A] px-5 py-3 text-sm font-extrabold text-white">
             Book a demo
           </a>
         </div>
@@ -45,6 +45,8 @@ export default function StickyCta() {
       <a
         href={bookingUrl("sticky-desktop")}
         data-cta="sticky-desktop"
+        target="_blank"
+        rel="noopener"
         tabIndex={show ? 0 : -1}
         aria-hidden={!show}
         className={`fixed bottom-6 left-6 z-40 hidden rounded-full bg-[#D63D1A] px-6 py-3.5 text-sm font-extrabold text-white shadow-2xl shadow-orange-500/40 transition duration-300 hover:bg-[#B93515] lg:inline-flex ${hidden}`}

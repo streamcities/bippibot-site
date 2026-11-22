@@ -86,6 +86,8 @@ function Cta({
     <a
       href={bookingUrl(placement)}
       data-cta={placement}
+      target="_blank"
+      rel="noopener"
       className={`inline-flex items-center justify-center rounded-full bg-[#D63D1A] px-7 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5 hover:bg-[#B93515] ${className}`}
     >
       {children}
