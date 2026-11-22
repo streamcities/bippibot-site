@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/virtual-employee", priority: 0.9, changeFrequency: "monthly" },
     { path: "/real-estate-video", priority: 0.9, changeFrequency: "monthly" },
     { path: "/newsletters", priority: 0.9, changeFrequency: "monthly" },
+    { path: "/social-on-steroids", priority: 0.9, changeFrequency: "monthly" },
     { path: "/about-us", priority: 0.6, changeFrequency: "monthly" },
     { path: "/contact-us", priority: 0.7, changeFrequency: "monthly" },
     { path: "/privacy-policy", priority: 0.2, changeFrequency: "yearly" },

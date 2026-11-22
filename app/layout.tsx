@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { SITE_NOINDEX } from "@/lib/noindex";
+import ChatWidget from "@/components/ChatWidget";
 
 const SITE_URL = "https://bippibot.com";
 const TITLE = "BippiBot | The Local Team That Makes Your Business Run on Autopilot";
@@ -26,6 +28,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
   },
   alternates: { canonical: SITE_URL },
+  ...(SITE_NOINDEX ? { robots: { index: false, follow: false, nocache: true } } : {}),
 };
 
 const LOCAL_BUSINESS_JSON_LD = {
@@ -65,6 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />
+        <ChatWidget />
       </body>
     </html>
   );
