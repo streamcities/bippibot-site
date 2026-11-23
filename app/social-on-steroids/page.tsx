@@ -9,7 +9,7 @@ import HeroVideo from "./HeroVideo";
 import { DEMO_HREF, DEMO_ID, KIT_FORM_ID, KIT_HREF, calEmbedUrl } from "./booking";
 import {
   ALSO_INCLUDED, FAQS, FOUNDING_RESULTS, HERO_DELIVERABLES, PAGE_DESCRIPTION, PAGE_PATH, PAGE_TITLE,
-  TESTIMONIALS, TURNAROUND, TURNAROUND_CONFIRMED,
+  TESTIMONIALS, TURNAROUND, TURNAROUND_CONFIRMED, HERO, HERO_HEADLINE,
 } from "./content";
 
 const SITE = "https://www.bippibot.com";
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "BippiBot",
-    title: "Every new listing gets a full launch kit. You just approve it.",
+    title: HERO_HEADLINE,
     description: PAGE_DESCRIPTION,
     url: PAGE_PATH,
     images: [{ url: `${A}/og.jpg`, width: 1200, height: 630, alt: "One listing becomes a tour video, carousel, flyer, and neighborhood guide" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Every new listing gets a full launch kit. You just approve it.",
+    title: HERO_HEADLINE,
     description: PAGE_DESCRIPTION,
     images: [`${A}/og.jpg`],
   },
@@ -135,10 +135,10 @@ export default function SocialOnSteroidsPage() {
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF7A5C]">Social on Steroids · for Florida listing agents</p>
             <h1 className="mt-3 text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl lg:text-6xl">
-              Every new listing gets a full launch kit. <span className="text-[#FF7A5C]">You just approve it.</span>
+              {HERO.lead} <span className="text-[#FF7A5C]">{HERO.accent}</span>
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#E6ECF5]">
-              A tour video, Instagram carousel, open-house flyer, neighborhood guide and posts, built from the photos you already have and ready {TURNAROUND}<Flag />. No videographer needed.
+              {HERO.subhead}
             </p>
             <p className="mt-5 inline-flex flex-wrap items-center gap-2 rounded-2xl bg-white/10 px-4 py-2.5 text-sm font-bold ring-1 ring-white/15">
               <span className="rounded-full bg-[#D63D1A] px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wide">Founding offer</span>

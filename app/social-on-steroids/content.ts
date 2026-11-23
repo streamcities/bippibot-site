@@ -4,11 +4,30 @@ export const PAGE_DESCRIPTION =
   "For Florida listing agents: send one listing and get a tour video, Instagram carousel, open-house flyer, neighborhood guide and posts under your brand. You approve everything. First listing free.";
 
 /**
- * Turnaround promise. Jay must confirm the number before this page is published.
- * While TURNAROUND_CONFIRMED is false, every mention shows a visible "[JAY: CONFIRM]" flag.
+ * Turnaround promise. Confirmed by Jay on 2026-11-23 (chose hero A: "launched in a day").
+ * If this is ever set back to false, every mention shows a visible "[JAY: CONFIRM]" flag.
  */
 export const TURNAROUND = "within 24 hours";
-export const TURNAROUND_CONFIRMED = false;
+export const TURNAROUND_CONFIRMED = true;
+
+/** Hero copy. `accent` is the part of the headline shown in coral. */
+export type HeroCopy = { lead: string; accent: string; subhead: string };
+/** A: live variant, chosen by Jay on 2026-11-23. */
+export const HERO_A: HeroCopy = {
+  lead: "Your next listing,",
+  accent: "launched in a day.",
+  subhead:
+    "Send us the listing. We turn your photos into a tour video, carousel, flyer and posts under your brand, and you approve every piece. First listing free.",
+};
+/** B: previous headline, kept for a later A/B test. */
+export const HERO_B: HeroCopy = {
+  lead: "Every new listing gets a full launch kit.",
+  accent: "You just approve it.",
+  subhead:
+    "A tour video, Instagram carousel, open-house flyer, neighborhood guide and posts, built from the photos you already have and ready within 24 hours. No videographer needed.",
+};
+export const HERO = HERO_A;
+export const HERO_HEADLINE = `${HERO.lead} ${HERO.accent}`;
 
 /** Real proof only. Leave empty until Jay supplies verified material; the page then shows the founding-agent banner. */
 export type Testimonial = { quote: string; name: string; brokerage: string; photo?: string };
