@@ -4,6 +4,10 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { SITE_NOINDEX } from "@/lib/noindex";
 import ChatWidget from "@/components/ChatWidget";
+import HideOnPaths from "@/components/HideOnPaths";
+
+/** Landing pages with their own minimal header and footer (no site nav). */
+const BARE_PAGES = ["/social-on-steroids"];
 
 const SITE_URL = "https://www.bippibot.com";
 const TITLE = "BippiBot | The Local Team That Makes Your Business Run on Autopilot";
@@ -65,9 +69,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(LOCAL_BUSINESS_JSON_LD) }}
         />
-        <Nav />
+        <HideOnPaths paths={BARE_PAGES}>
+          <Nav />
+        </HideOnPaths>
         <main className="flex-1">{children}</main>
-        <Footer />
+        <HideOnPaths paths={BARE_PAGES}>
+          <Footer />
+        </HideOnPaths>
         <ChatWidget />
       </body>
     </html>
