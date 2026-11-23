@@ -118,8 +118,8 @@ export default function SocialOnSteroidsPage() {
       {/* 7. MINIMAL HEADER: logo + primary CTA only */}
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0B1D3A]/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <Link href="/" className="flex items-center gap-2" aria-label="BippiBot home">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--blue-500)] to-[var(--teal-500)] text-base font-bold text-white">B</span>
+          <Link href="/" className="flex items-center gap-2">
+            <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--blue-500)] to-[var(--teal-500)] text-base font-bold text-white">B</span>
             <span className="text-lg font-bold tracking-tight text-white">BippiBot</span>
           </Link>
           <a href={KIT_HREF} data-cta="header" className="rounded-full bg-[#D63D1A] px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-[#B93515] sm:px-5">
