@@ -7,6 +7,7 @@ const LINKS = [
   { href: "/packages", label: "Automation Packages" },
   { href: "/virtual-employee", label: "Virtual Employee" },
   { href: "/real-estate-video", label: "Real Estate Video" },
+  { href: "/social-on-steroids", label: "For Realtors" },
   { href: "/newsletters", label: "Newsletters" },
   { href: "/about-us", label: "About" },
   { href: "/contact-us", label: "Contact" },
