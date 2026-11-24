@@ -23,6 +23,7 @@ export default function Footer() {
               <li><Link href="/packages" className="hover:text-white">Automation Packages</Link></li>
               <li><Link href="/virtual-employee" className="hover:text-white">Virtual Employee</Link></li>
               <li><Link href="/real-estate-video" className="hover:text-white">Real Estate Video</Link></li>
+              <li><Link href="/social-on-steroids" className="hover:text-white">For Realtors</Link></li>
               <li><Link href="/newsletters" className="hover:text-white">Client Newsletters</Link></li>
             </ul>
           </div>
