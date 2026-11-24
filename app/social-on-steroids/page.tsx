@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import DemoForm from "./DemoForm";
+import Link from "next/link";
+import { SITE_NOINDEX } from "@/lib/noindex";
+import LeadForm from "./LeadForm";
 import StickyCta from "./StickyCta";
-import ComingSoon from "./ComingSoon";
-import { isComingSoon } from "./features";
-import { ctaHref, ctaTarget } from "./booking";
-import { FAQS, PAGE_DESCRIPTION, PAGE_PATH, PAGE_TITLE } from "./content";
+import Tracking from "./Tracking";
+import HeroVideo from "./HeroVideo";
+import { DEMO_HREF, DEMO_ID, KIT_FORM_ID, KIT_HREF, calEmbedUrl } from "./booking";
+import {
+  ALSO_INCLUDED, FAQS, FOUNDING_RESULTS, HERO_DELIVERABLES, PAGE_DESCRIPTION, PAGE_PATH, PAGE_TITLE,
+  TESTIMONIALS, TURNAROUND, TURNAROUND_CONFIRMED, HERO, HERO_HEADLINE,
+} from "./content";
 
 const SITE = "https://www.bippibot.com";
 const A = "/social-on-steroids";
+/** Placeholders for missing proof and assets are shown on preview deployments only. */
+const SHOW_PLACEHOLDERS = SITE_NOINDEX;
 
 export const metadata: Metadata = {
   title: { absolute: `${PAGE_TITLE} | BippiBot` },
@@ -17,14 +24,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "BippiBot",
-    title: "Your bot never sleeps: Social on Steroids for Florida listing agents",
+    title: HERO_HEADLINE,
     description: PAGE_DESCRIPTION,
     url: PAGE_PATH,
     images: [{ url: `${A}/og.jpg`, width: 1200, height: 630, alt: "One listing becomes a tour video, carousel, flyer, and neighborhood guide" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your bot never sleeps: Social on Steroids for Florida listing agents",
+    title: HERO_HEADLINE,
     description: PAGE_DESCRIPTION,
     images: [`${A}/og.jpg`],
   },
@@ -42,224 +49,232 @@ const JSON_LD = {
       url: `${SITE}${PAGE_PATH}`,
       audience: { "@type": "BusinessAudience", audienceType: "Real estate listing agents" },
       areaServed: { "@type": "State", name: "Florida" },
-      provider: { "@type": "Organization", name: "BippiBot", url: SITE },
+      provider: { "@type": "Organization", name: "BippiBot", url: SITE, parentOrganization: { "@type": "Organization", name: "StreamCities, LLC" } },
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Social on Steroids pricing",
         itemListElement: [
           { "@type": "Offer", name: "Setup (one time)", price: "495", priceCurrency: "USD" },
-          {
-            "@type": "Offer",
-            name: "Monthly, per agent",
-            priceSpecification: { "@type": "UnitPriceSpecification", price: "395", priceCurrency: "USD", unitText: "MONTH" },
-          },
-          { "@type": "Offer", name: "Standard listing package (under $1M)", price: "295", priceCurrency: "USD" },
-          { "@type": "Offer", name: "Luxury listing package ($1M and up)", price: "495", priceCurrency: "USD" },
-          {
-            "@type": "Offer",
-            name: "Monthly Market Newsletter add-on (founding rate)",
-            priceSpecification: { "@type": "UnitPriceSpecification", price: "149", priceCurrency: "USD", unitText: "MONTH" },
-          },
+          { "@type": "Offer", name: "Monthly engine, per agent", priceSpecification: { "@type": "UnitPriceSpecification", price: "395", priceCurrency: "USD", unitText: "MONTH" } },
+          { "@type": "Offer", name: "Per listing (under $1M)", price: "295", priceCurrency: "USD" },
+          { "@type": "Offer", name: "Per listing ($1M and up)", price: "495", priceCurrency: "USD" },
+          { "@type": "Offer", name: "Monthly Market Newsletter add-on", priceSpecification: { "@type": "UnitPriceSpecification", price: "149", priceCurrency: "USD", unitText: "MONTH" } },
         ],
       },
     },
     {
       "@type": "FAQPage",
       "@id": `${SITE}${PAGE_PATH}#faq`,
-      mainEntity: FAQS.map((f) => ({
-        "@type": "Question",
-        name: f.question,
-        acceptedAnswer: { "@type": "Answer", text: f.answer },
-      })),
+      mainEntity: FAQS.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
     },
   ],
 };
 
-function Cta({
-  className = "",
-  children = "Book a 15-minute demo",
-  placement,
-}: {
-  className?: string;
-  children?: React.ReactNode;
-  placement: string;
-}) {
+/** Visible "[JAY: CONFIRM]" flag next to every turnaround mention until TURNAROUND_CONFIRMED is true. */
+const Flag = () =>
+  TURNAROUND_CONFIRMED ? null : (
+    <span className="ml-1 inline-block rounded bg-[#FDE68A] px-1.5 py-0.5 align-middle text-[11px] font-extrabold leading-4 text-[#7A2E0E]">[JAY: CONFIRM]</span>
+  );
+
+function Placeholder({ title, need, className = "", dark = false }: { title: string; need: string; className?: string; dark?: boolean }) {
+  if (!SHOW_PLACEHOLDERS) return null;
   return (
-    <a
-      href={ctaHref(placement)}
-      data-cta={placement}
-      {...ctaTarget()}
-      className={`inline-flex items-center justify-center rounded-full bg-[#D63D1A] px-7 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5 hover:bg-[#B93515] ${className}`}
-    >
-      {children}
+    <div className={`rounded-2xl border-2 border-dashed p-5 ${dark ? "border-white/40 text-white" : "border-[#C43A18]/50 bg-[#FFF7ED] text-[#7A2E0E]"} ${className}`}>
+      <p className="text-[11px] font-extrabold uppercase tracking-widest">Placeholder · not shown in production</p>
+      <p className="mt-1 font-extrabold">{title}</p>
+      <p className="mt-1 text-sm opacity-90">{need}</p>
+    </div>
+  );
+}
+
+function PrimaryCta({ placement, className = "" }: { placement: string; className?: string }) {
+  return (
+    <a href={KIT_HREF} data-cta={placement}
+      className={`inline-flex items-center justify-center rounded-full bg-[#D63D1A] px-7 py-4 text-base font-extrabold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5 hover:bg-[#B93515] ${className}`}>
+      Get your free listing kit
     </a>
   );
 }
 
-const Check = () => (
-  <span aria-hidden className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[#D63D1A] text-[11px] font-black text-white">✓</span>
+const Check = ({ dark = false }: { dark?: boolean }) => (
+  <span aria-hidden className={`mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full text-[11px] font-black ${dark ? "bg-white text-[#D63D1A]" : "bg-[#D63D1A] text-white"}`}>✓</span>
 );
 
-const OUTPUTS = [
-  { icon: "🎬", t: "Vertical tour video", d: "Reels, TikTok, Shorts" },
-  { icon: "🖼️", t: "Instagram carousel", d: "Swipeable photo story" },
-  { icon: "📄", t: "Open-house flyer", d: "With QR to your listing" },
-  { icon: "🗺️", t: "Neighborhood guide", d: "For out-of-town buyers" },
-  { icon: "💬", t: "5 social captions", d: "Ready to post" },
-  { icon: "✍️", t: "Listing description", d: "Polished and improved" },
-  { icon: "📧", t: "Just-listed email", d: "For your buyer list" },
-  { icon: "🏠", t: "Listing landing page", d: "Every post links here" },
-];
-
 const CAROUSEL = ["01", "02", "03", "04", "05", "06"];
+const DELIVERABLE_IMG: Record<string, { src: string; w: number; h: number; alt: string }> = {
+  tour: { src: `${A}/tour-poster.webp`, w: 540, h: 960, alt: "Frame from the vertical tour video" },
+  carousel: { src: `${A}/carousel-01.webp`, w: 640, h: 800, alt: "First slide of the Instagram carousel" },
+  flyer: { src: `${A}/flyer.webp`, w: 820, h: 875, alt: "Open-house flyer" },
+  guide: { src: `${A}/guide.webp`, w: 900, h: 713, alt: "Neighborhood guide" },
+};
 
 export default function SocialOnSteroidsPage() {
+  const cal = calEmbedUrl();
   return (
     <div className="bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <style>{`@media (max-width:1023px){body{padding-bottom:76px}} @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}} #showcase,#how,#pricing,#faq,#demo{scroll-margin-top:84px} #demo-form{scroll-margin-top:96px}`}</style>
+      <style>{`@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}} @media (max-width:1023px){body{padding-bottom:84px}} #showcase,#how,#pricing,#faq,#demo,#get-kit-section{scroll-margin-top:72px} #get-kit{scroll-margin-top:88px}`}</style>
 
-      {/* HERO */}
+      {/* 7. MINIMAL HEADER: logo + primary CTA only */}
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0B1D3A]/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <Link href="/" className="flex items-center gap-2">
+            <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--blue-500)] to-[var(--teal-500)] text-base font-bold text-white">B</span>
+            <span className="text-lg font-bold tracking-tight text-white">BippiBot</span>
+          </Link>
+          <a href={KIT_HREF} data-cta="header" className="rounded-full bg-[#D63D1A] px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-[#B93515] sm:px-5">
+            <span className="sm:hidden">Free listing kit</span><span className="hidden sm:inline">Get your free listing kit</span>
+          </a>
+        </div>
+      </header>
+
+      {/* 1. HERO */}
       <section className="relative overflow-hidden bg-[#0B1D3A] text-white">
         <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-[#D63D1A]/20 blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 pb-14 pt-10 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pb-20 lg:pt-16">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 pb-14 pt-8 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pb-20 lg:pt-14">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF5A36]">Social on Steroids · for Florida listing agents</p>
-            <h1 className="mt-3 text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
-              Your bot <span className="text-[#FF5A36]">never sleeps.</span>
+            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#FF7A5C]">Social on Steroids · for Florida listing agents</p>
+            <h1 className="mt-3 text-4xl font-black leading-[1.02] tracking-tight sm:text-5xl lg:text-6xl">
+              {HERO.lead} <span className="text-[#FF7A5C]">{HERO.accent}</span>
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#E6ECF5] sm:text-xl">
-              The minute a listing goes live<ComingSoon feature="listingMonitoring" />, it builds your Instagram, Facebook, LinkedIn, X and TikTok posts and sends buyers to that listing&apos;s own landing page, where an AI assistant answers their questions 24/7<ComingSoon feature="listingChatbot" />.
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#E6ECF5]">
+              {HERO.subhead}
             </p>
-            <p className="mt-3 max-w-xl text-base leading-relaxed text-[#C9D3E4]">
-              {isComingSoon("listingMonitoring") ? "Today: send us the listing and the bot builds the whole package with a fast turnaround. " : "The whole package arrives with a fast turnaround. "}
-              <strong className="text-white">You just tap Approve.</strong>
+            <p className="mt-5 inline-flex flex-wrap items-center gap-2 rounded-2xl bg-white/10 px-4 py-2.5 text-sm font-bold ring-1 ring-white/15">
+              <span className="rounded-full bg-[#D63D1A] px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wide">Founding offer</span>
+              First listing free. $495 setup waived.
             </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Cta placement="hero" />
-              <a href="#showcase" className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-4 text-base font-bold text-white transition hover:bg-white/10">
-                See real sample work ↓
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <PrimaryCta placement="hero" />
+              <a href="#showcase" data-cta="hero-sample" className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-4 text-base font-bold text-white transition hover:bg-white/10">
+                See the sample work
               </a>
             </div>
-            <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-[#B9C4D8]">
+            <p className="mt-4 text-sm text-[#C9D3E4]">
+              Prefer to talk? <a href={DEMO_HREF} data-cta="hero-demo" className="font-bold text-white underline underline-offset-4">Book a 15-minute demo</a>.
+            </p>
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-[#C9D3E4]">
               <li>✓ You approve everything</li>
-              <li>✓ You keep your brand</li>
+              <li>✓ Your brand, not ours</li>
               <li>✓ Month to month</li>
             </ul>
           </div>
 
-          {/* Hero visual: phone with tour + floating outputs */}
-          <div className="relative mx-auto h-[440px] w-full max-w-[460px] sm:h-[520px]">
-            <div className="absolute left-1/2 top-0 z-10 w-[200px] -translate-x-1/2 overflow-hidden rounded-[2rem] border-[6px] border-[#1d2c4a] bg-black shadow-2xl sm:w-[236px]">
-              <Image src={`${A}/tour-poster.webp`} alt="Frame from a vertical listing tour video" width={540} height={960} priority sizes="236px" className="h-auto w-full" />
-              <span className="absolute left-3 top-14 rounded-full bg-[#D63D1A] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide">▶ Tour video</span>
+          {/* Real sample work in the hero */}
+          <div className="relative mx-auto h-[430px] w-full max-w-[440px] sm:h-[520px]">
+            <div className="absolute left-1/2 top-0 z-10 w-[196px] -translate-x-1/2 overflow-hidden rounded-[2rem] border-[6px] border-[#1d2c4a] bg-black shadow-2xl sm:w-[236px]">
+              <HeroVideo src={`${A}/tour.mp4`} poster={`${A}/tour-poster.webp`} />
             </div>
-            <div className="absolute left-0 top-16 w-[140px] -rotate-6 overflow-hidden rounded-xl bg-white shadow-xl sm:w-[168px]">
-              <Image src={`${A}/carousel-05.webp`} alt="Instagram carousel slide" width={640} height={800} sizes="168px" className="h-auto w-full" />
+            <div className="absolute left-0 top-16 w-[132px] -rotate-6 overflow-hidden rounded-xl bg-white shadow-xl sm:w-[168px]">
+              <Image src={`${A}/carousel-05.webp`} alt="Instagram carousel slide from the sample kit" width={640} height={800} sizes="168px" priority className="h-auto w-full" />
               <p className="px-2 py-1 text-[10px] font-bold text-[#0B1D3A]">Carousel</p>
             </div>
-            <div className="absolute bottom-6 right-0 w-[150px] rotate-6 overflow-hidden rounded-xl bg-white shadow-xl sm:w-[180px]">
-              <Image src={`${A}/flyer.webp`} alt="Open-house flyer" width={820} height={875} sizes="180px" className="h-auto w-full" />
+            <div className="absolute bottom-4 right-0 w-[142px] rotate-6 overflow-hidden rounded-xl bg-white shadow-xl sm:w-[180px]">
+              <Image src={`${A}/flyer.webp`} alt="Open-house flyer from the sample kit" width={820} height={875} sizes="180px" className="h-auto w-full" />
               <p className="px-2 py-1 text-[10px] font-bold text-[#0B1D3A]">Open-house flyer</p>
             </div>
-            <div className="absolute bottom-0 left-2 z-20 rounded-2xl bg-white px-4 py-3 text-[#0B1D3A] shadow-xl">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-[#5A6884]">Listing package</p>
-              <p className="mt-1 flex items-center gap-2 text-sm font-extrabold">
-                Ready to review <span className="rounded-full bg-[#D63D1A] px-2.5 py-1 text-xs text-white">Approve</span>
-              </p>
-            </div>
+            <p className="absolute bottom-0 left-0 z-20 rounded-xl bg-white px-3 py-2 text-[11px] font-bold text-[#0B1D3A] shadow-xl">Real sample · $3,495,000 Sanibel listing</p>
           </div>
         </div>
       </section>
 
-      {/* PROBLEM STRIP */}
-      <section className="border-b border-[var(--line-200)] bg-[#F2F5FA]">
-        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:px-6 md:grid-cols-2">
-          <p className="border-l-4 border-[#FF5A36] pl-4 text-lg text-[#0E1B33]">
-            <strong>Your listing gets one post, then goes quiet.</strong> Not because anyone&apos;s lazy, but because nobody has time to build the whole package for every listing.
-          </p>
-          <p className="border-l-4 border-[#FF5A36] pl-4 text-lg text-[#0E1B33]">
-            <strong>The bot builds it every time.</strong> Video, carousel, flyer, guide, and posts for each listing, under your brand, with inquiries from comments and DMs routed straight to you.
-          </p>
-        </div>
-      </section>
-
-      {/* ONE LISTING BECOMES ALL THIS */}
-      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:py-24">
-        <div className="text-center">
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C43A18]">Before → After</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">One listing becomes all this</h2>
-        </div>
-        <div className="mt-10 grid items-center gap-6 lg:grid-cols-[1fr_auto_1.6fr]">
-          <div className="rounded-3xl border border-[var(--line-200)] bg-white p-4 shadow-sm">
-            <p className="mb-3 text-xs font-extrabold uppercase tracking-widest text-[#5A6884]">Before: what you already have</p>
-            <Image src={`${A}/photo-01.webp`} alt="A single listing photo of a Sanibel home" width={960} height={640} sizes="(min-width:1024px) 360px, 100vw" className="h-auto w-full rounded-2xl" />
-            <p className="mt-3 text-sm text-[#5A6884]">Listing photos + MLS details. No shoot, no drone, no editor.</p>
-          </div>
-          <div aria-hidden className="mx-auto flex h-14 w-14 rotate-90 items-center justify-center rounded-full bg-[#D63D1A] text-2xl font-black text-white shadow-lg lg:rotate-0">→</div>
-          <div className="rounded-3xl bg-[#0B1D3A] p-5 text-white shadow-xl">
-            <p className="mb-4 text-xs font-extrabold uppercase tracking-widest text-[#FF5A36]">After: your listing launch kit</p>
-            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {OUTPUTS.map((o) => (
-                <li key={o.t} className="rounded-2xl bg-white/[0.07] p-3 ring-1 ring-white/10">
-                  <span className="text-2xl" aria-hidden>{o.icon}</span>
-                  <p className="mt-1 text-sm font-extrabold">{o.t}</p>
-                  <p className="text-xs text-[#B9C4D8]">{o.d}</p>
-                </li>
+      {/* 3. SOCIAL PROOF (real proof only; founding-agent banner until it exists) */}
+      <section aria-label="Founding agents" className="border-b border-[var(--line-200)] bg-[#F2F5FA]">
+        <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6">
+          {TESTIMONIALS.length ? (
+            <div className="grid gap-5 md:grid-cols-3">
+              {TESTIMONIALS.map((t) => (
+                <figure key={t.name} className="rounded-2xl bg-white p-5 shadow-sm">
+                  <blockquote className="text-[#0E1B33]">&ldquo;{t.quote}&rdquo;</blockquote>
+                  <figcaption className="mt-3 text-sm font-bold text-[#0B1D3A]">{t.name} <span className="font-medium text-[#5A6884]">· {t.brokerage}</span></figcaption>
+                </figure>
               ))}
-              <li className="flex flex-col justify-center rounded-2xl bg-[#D63D1A] p-3">
-                <p className="text-sm font-extrabold">+ status posts</p>
-                <p className="text-xs text-white">Price improved, open house, under contract, sold</p>
-              </li>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-between gap-4 rounded-3xl bg-[#0B1D3A] px-6 py-6 text-center text-white sm:flex-row sm:text-left">
+              <div>
+                <p className="text-xl font-black">Founding agents wanted: your first listing is free.</p>
+                <p className="mt-1 text-sm text-[#C9D3E4]">We&apos;re taking on a small group of Florida listing agents. Setup ($495) is waived.</p>
+              </div>
+              <PrimaryCta placement="proof-banner" className="flex-none" />
+            </div>
+          )}
+          {FOUNDING_RESULTS.length ? (
+            <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {FOUNDING_RESULTS.map((r) => (
+                <li key={r.label} className="rounded-2xl bg-white p-4 text-center shadow-sm"><p className="text-2xl font-black text-[#0B1D3A]">{r.value}</p><p className="text-xs text-[#5A6884]">{r.label}</p></li>
+              ))}
             </ul>
-          </div>
+          ) : null}
+          {SHOW_PLACEHOLDERS && !TESTIMONIALS.length ? (
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              <Placeholder title="Testimonial card 1" need="Real agent: photo, name, brokerage, a quote they approved in writing." />
+              <Placeholder title="Testimonial card 2" need="Same as card 1. Optional, up to 3 cards." />
+              <Placeholder title="Founding-agent results strip" need="Real numbers from founding agents (e.g. hours saved per listing, posts published). Only measured figures." />
+            </div>
+          ) : null}
+          {SHOW_PLACEHOLDERS ? <Placeholder className="mt-4" title="Brokerage or MLS logos (optional)" need="Only with written permission and a real relationship. Leave out otherwise." /> : null}
         </div>
       </section>
 
-      {/* SHOWCASE */}
-      <section id="showcase" className="bg-[#F2F5FA] py-16 lg:py-24">
+      {/* 9. THE KIT: 4 hero deliverables + "Also included" */}
+      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:py-20">
+        <div className="text-center">
+          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C43A18]">What one listing gets</p>
+          <h2 className="mt-2 text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">Your listing launch kit</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-lg text-[#5A6884]">Built from your listing photos and MLS details. No shoot, no drone, no editor.</p>
+        </div>
+        <ul className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {HERO_DELIVERABLES.map((d) => {
+            const img = DELIVERABLE_IMG[d.key];
+            return (
+              <li key={d.key} className="overflow-hidden rounded-3xl border border-[var(--line-200)] bg-white shadow-sm">
+                <div className="aspect-[4/5] overflow-hidden bg-[#F2F5FA]">
+                  <Image src={img.src} alt={img.alt} width={img.w} height={img.h} sizes="(min-width:1024px) 300px, 50vw" loading="lazy" className="h-full w-full object-cover object-top" />
+                </div>
+                <div className="p-4">
+                  <p className="font-extrabold text-[#0B1D3A]">{d.t}</p>
+                  <p className="text-sm text-[#5A6884]">{d.d}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <details className="group mx-auto mt-6 max-w-3xl rounded-2xl border border-[var(--line-200)] bg-[#F2F5FA] p-5">
+          <summary className="flex cursor-pointer list-none items-center justify-between font-extrabold text-[#0B1D3A]">
+            Also included <span aria-hidden className="text-xl text-[#C43A18] transition group-open:rotate-45">+</span>
+          </summary>
+          <ul className="mt-4 grid gap-2 text-[#0E1B33] sm:grid-cols-2">
+            {ALSO_INCLUDED.map((t) => <li key={t} className="flex gap-3"><Check />{t}</li>)}
+          </ul>
+        </details>
+        <p className="mx-auto mt-4 max-w-3xl text-center text-sm text-[#5A6884]">
+          <span className="mr-1 rounded bg-[#E6ECF5] px-1.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wide text-[#0B1D3A]">On the roadmap</span>
+          Automatic new-listing detection. Today, you send us the listing.
+        </p>
+      </section>
+
+      {/* SHOWCASE + 10. mid-market slot */}
+      <section id="showcase" className="bg-[#F2F5FA] py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="max-w-3xl">
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C43A18]">Real sample work</p>
             <h2 className="mt-2 text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">Built for a $3,495,000 Sanibel listing</h2>
-            <p className="mt-3 text-lg text-[#5A6884]">
-              A home across the street from the Gulf, built from the live listing&apos;s photos. Agent branding is swapped for a &ldquo;Your logo&rdquo; placeholder here. Nothing was posted.
-            </p>
+            <p className="mt-3 text-lg text-[#5A6884]">Made from a live listing&apos;s photos. Branding is replaced with a &ldquo;Your logo&rdquo; placeholder. Nothing was posted.</p>
           </div>
-
           <div className="mt-10 grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
             <figure className="rounded-3xl bg-white p-4 shadow-sm">
-              <video
-                className="aspect-[9/16] w-full rounded-2xl bg-black"
-                controls
-                muted
-                playsInline
-                preload="none"
-                poster={`${A}/tour-poster.webp`}
-                aria-label="Vertical tour video sample"
-              >
+              <video data-video="showcase-tour" className="aspect-[9/16] w-full rounded-2xl bg-black" controls muted playsInline preload="none" poster={`${A}/tour-poster.webp`} aria-label="30-second vertical tour video sample">
                 <source src={`${A}/tour.mp4`} type="video/mp4" />
               </video>
-              <figcaption className="mt-3 text-sm font-bold text-[#0B1D3A]">Vertical tour video <span className="font-medium text-[#5A6884]">· 30-second reel</span></figcaption>
+              <figcaption className="mt-3 text-sm font-bold text-[#0B1D3A]">Tour video <span className="font-medium text-[#5A6884]">· 30 seconds, vertical</span></figcaption>
             </figure>
-
             <div className="grid min-w-0 gap-6">
               <figure className="min-w-0 rounded-3xl bg-white p-4 shadow-sm">
-                <figcaption className="mb-3 flex items-center justify-between text-sm font-bold text-[#0B1D3A]">
-                  Instagram carousel <span className="font-medium text-[#5A6884]">swipe →</span>
-                </figcaption>
+                <figcaption className="mb-3 flex items-center justify-between text-sm font-bold text-[#0B1D3A]">Instagram carousel <span className="font-medium text-[#5A6884]">swipe →</span></figcaption>
                 <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2" tabIndex={0} aria-label="Carousel slides">
                   {CAROUSEL.map((n, i) => (
-                    <Image
-                      key={n}
-                      src={`${A}/carousel-${n}.webp`}
-                      alt={`Carousel slide ${i + 1}`}
-                      width={640}
-                      height={800}
-                      sizes="220px"
-                      loading="lazy"
-                      className="h-auto w-[62%] flex-none snap-start rounded-xl sm:w-[220px]"
-                    />
+                    <Image key={n} src={`${A}/carousel-${n}.webp`} alt={`Carousel slide ${i + 1}`} width={640} height={800} sizes="220px" loading="lazy" className="h-auto w-[62%] flex-none snap-start rounded-xl sm:w-[220px]" />
                   ))}
                 </div>
               </figure>
@@ -269,115 +284,145 @@ export default function SocialOnSteroidsPage() {
                   <figcaption className="mt-3 text-sm font-bold text-[#0B1D3A]">Open-house flyer <span className="font-medium text-[#5A6884]">· QR to your listing</span></figcaption>
                 </figure>
                 <figure className="rounded-3xl bg-white p-4 shadow-sm">
-                  <Image src={`${A}/guide.webp`} alt="Neighborhood guide for buyers" width={900} height={713} sizes="(min-width:640px) 400px, 100vw" loading="lazy" className="h-auto w-full rounded-xl border border-[var(--line-200)]" />
+                  <Image src={`${A}/guide.webp`} alt="Neighborhood guide" width={900} height={713} sizes="(min-width:640px) 400px, 100vw" loading="lazy" className="h-auto w-full rounded-xl border border-[var(--line-200)]" />
                   <figcaption className="mt-3 text-sm font-bold text-[#0B1D3A]">Neighborhood guide <span className="font-medium text-[#5A6884]">· beaches, dining, drive times</span></figcaption>
                 </figure>
               </div>
             </div>
           </div>
-          <div className="mt-10 text-center"><Cta placement="showcase">See it for your next listing</Cta></div>
+          <Placeholder className="mt-8" title="Second sample: a mid-market listing ($500K–$900K)"
+            need="Same kit (tour video, carousel, flyer, guide) built from a live Florida listing in this range, e.g. a 3-bed single-family home in Cape Coral or Fort Myers, with the listing agent's permission to use the photos. Branding replaced with 'Your logo'." />
+          <div className="mt-10 text-center"><PrimaryCta placement="showcase" /></div>
         </div>
       </section>
 
-      {/* WHAT'S INCLUDED */}
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:py-24">
-        <h2 className="text-center text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">Launch it. Then keep it moving.</h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <div className="rounded-3xl border border-[var(--line-200)] p-6">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-[#C43A18]">For every new listing</p>
-            <ul className="mt-4 space-y-3 text-[#0E1B33]">
-              {["Vertical tour video from the listing photos", "Photo carousel for Instagram and Facebook", "Open-house flyer with a QR code to the listing", "Neighborhood guide for out-of-town buyers", "Five ready-to-post social captions", "An improved listing description", "A just-listed email for your buyer list", "A landing page for the listing that every post links to"].map((t) => (
-                <li key={t} className="flex gap-3"><Check />{t}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="rounded-3xl border border-[var(--line-200)] p-6">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-[#C43A18]">While it&apos;s live, and between listings</p>
-            <ul className="mt-4 space-y-3 text-[#0E1B33]">
-              <li className="flex gap-3"><Check /><span>The bot spots each new listing on its own<ComingSoon feature="listingMonitoring" /></span></li>
-              <li className="flex gap-3"><Check /><span>A 24/7 AI assistant on the listing page answers buyer questions<ComingSoon feature="listingChatbot" /></span></li>
-              {["Price-drop, open-house, under-contract, and just-sold posts", "A weekly seller report you can forward", "Comments and DMs routed to you", "Drafted open-house follow-ups, ready to send", "A monthly local market recap, so your feed stays active"].map((t) => (
-                <li key={t} className="flex gap-3"><Check />{t}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <p className="mt-5 text-center text-sm text-[#5A6884]">Photography, drone, and on-site filming are not included. Paid ad spend is separate.</p>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section id="how" className="bg-[#0B1D3A] py-16 text-white lg:py-24">
+      {/* 4. HOW IT WORKS (truthful, 3 steps) */}
+      <section id="how" className="bg-[#0B1D3A] py-16 text-white lg:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
           <h2 className="text-center text-3xl font-black tracking-tight sm:text-5xl">How it works</h2>
           <ol className="mt-10 grid gap-5 md:grid-cols-3">
-            {[
-              isComingSoon("listingMonitoring")
-                ? ["You send us the listing", "The bot builds the full marketing package from your photos and listing details. Automatic pickup of new listings is coming soon."]
-                : ["A new listing goes live", "The bot picks it up and builds the full marketing package from your photos and listing details."],
-              ["You review and tap Approve", "Nothing posts or sends until you say yes. You stay compliant, and your brokerage stays comfortable."],
-              ["The campaign runs", "Approved posts go out on schedule. Status changes, seller reports, inquiries, and follow-ups are handled for you."],
-            ].map(([t, d], i) => (
-              <li key={t} className="rounded-3xl bg-white/[0.06] p-6 ring-1 ring-white/10">
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D63D1A] text-lg font-black">{i + 1}</span>
-                <h3 className="mt-4 text-xl font-extrabold">{t}</h3>
-                <p className="mt-2 text-[#B9C4D8]">{d}</p>
-              </li>
-            ))}
+            <li className="rounded-3xl bg-white/[0.06] p-6 ring-1 ring-white/10">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D63D1A] text-lg font-black">1</span>
+              <h3 className="mt-4 text-xl font-extrabold">Send the listing</h3>
+              <p className="mt-2 text-[#C9D3E4]">Send the listing link or address. We use the photos and MLS details you already have.</p>
+            </li>
+            <li className="rounded-3xl bg-white/[0.06] p-6 ring-1 ring-white/10">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D63D1A] text-lg font-black">2</span>
+              <h3 className="mt-4 text-xl font-extrabold">Review and approve</h3>
+              <p className="mt-2 text-[#C9D3E4]">Your launch kit is ready to review {TURNAROUND}<Flag />. Approve what you want. Nothing posts or sends without your approval.</p>
+            </li>
+            <li className="rounded-3xl bg-white/[0.06] p-6 ring-1 ring-white/10">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D63D1A] text-lg font-black">3</span>
+              <h3 className="mt-4 text-xl font-extrabold">We run the campaign</h3>
+              <p className="mt-2 text-[#C9D3E4]">Approved posts go out on schedule, with status posts for price changes, open houses, under contract and sold.</p>
+            </li>
           </ol>
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:py-24">
-        <div className="text-center">
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C43A18]">Simple pricing</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">Month to month. No long contract.</h2>
-        </div>
-
-        <div className="mt-8 flex flex-col items-center justify-between gap-3 rounded-3xl bg-[#D63D1A] px-6 py-5 text-center text-white shadow-lg sm:flex-row sm:text-left">
-          <p className="text-lg font-black sm:text-xl">Founding-agent offer: setup waived + your first listing free.</p>
-          <p className="text-sm font-semibold text-white">Standard rates after that.</p>
-        </div>
-
-        <div className="mt-6 grid gap-5 md:grid-cols-3">
-          <div className="rounded-3xl border border-[var(--line-200)] bg-[#F2F5FA] p-6">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-[#5A6884]">Setup · one time</p>
-            <p className="mt-2 text-5xl font-black text-[#0B1D3A]">$495</p>
-            <p className="mt-1 text-sm font-extrabold text-[#C43A18]">Waived for founding agents</p>
-            <p className="mt-3 text-sm text-[#5A6884]">Brand kit, channel connection, brokerage disclosure line, and the approval workflow.</p>
-          </div>
-          <div className="relative rounded-3xl border-2 border-[#0B1D3A] bg-white p-6 shadow-xl">
-            <span className="absolute -top-3 left-6 rounded-full bg-[#0B1D3A] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">The engine</span>
-            <p className="text-xs font-extrabold uppercase tracking-widest text-[#5A6884]">Monthly · per agent</p>
-            <p className="mt-2 text-5xl font-black text-[#0B1D3A]">$395<span className="text-lg font-bold text-[#5A6884]">/mo</span></p>
-            <p className="mt-3 text-sm text-[#5A6884]">Approval-required scheduling, status-change posts, weekly seller reports, comment and DM routing, open-house follow-up drafts, and the monthly market recap, plus automatic listing monitoring<ComingSoon feature="listingMonitoring" />.</p>
-          </div>
-          <div className="rounded-3xl border border-[var(--line-200)] bg-[#F2F5FA] p-6">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-[#5A6884]">Per listing</p>
-            <p className="mt-2 text-5xl font-black text-[#0B1D3A]">$295</p>
-            <p className="mt-1 text-sm font-extrabold text-[#0B1D3A]">$495 for listings $1M and up</p>
-            <p className="mt-1 text-sm font-extrabold text-[#C43A18]">First listing free for founding agents</p>
-            <p className="mt-3 text-sm text-[#5A6884]">The full package. Luxury adds a deeper neighborhood guide and the complete price-change and still-available post set.</p>
-          </div>
-        </div>
-
-        <div className="mt-5 grid items-center gap-4 rounded-3xl border-2 border-[#0B1D3A] p-6 sm:grid-cols-[auto_1fr_auto]">
-          <span className="w-fit rounded-md bg-[#0B1D3A] px-2.5 py-1 text-xs font-extrabold uppercase tracking-widest text-white">Add-on</span>
+      {/* 2. PRIMARY CONVERSION: send one listing */}
+      <section id={`${KIT_FORM_ID}-section`} className="relative overflow-hidden bg-[#F2F5FA] py-16 lg:py-20">
+        <div className="relative mx-auto grid max-w-6xl items-start gap-10 px-5 sm:px-6 lg:grid-cols-2">
           <div>
-            <h3 className="text-lg font-extrabold text-[#0B1D3A]">Monthly Market Newsletter</h3>
-            <p className="text-sm text-[#5A6884]">A branded email to your past clients and sphere every month: local market snapshot, your new listings and solds, area happenings, and a &ldquo;thinking of selling?&rdquo; prompt. You approve before it sends.</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C43A18]">Founding offer</p>
+            <h2 className="mt-2 text-3xl font-black leading-tight tracking-tight text-[#0B1D3A] sm:text-5xl">Send us one listing. The first kit is free.</h2>
+            <ul className="mt-6 space-y-3 text-[#0E1B33]">
+              <li className="flex gap-3"><Check />The full launch kit, ready to review {TURNAROUND}<Flag /></li>
+              <li className="flex gap-3"><Check />Built from photos you already have</li>
+              <li className="flex gap-3"><Check />Your brand on everything</li>
+              <li className="flex gap-3"><Check />Nothing posts until you approve it</li>
+            </ul>
+            {/* 11. founder near the form */}
+            <div className="mt-8 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm">
+              {SHOW_PLACEHOLDERS ? (
+                <div className="flex h-16 w-16 flex-none items-center justify-center rounded-full border-2 border-dashed border-[#C43A18]/60 bg-[#FFF7ED] text-center text-[9px] font-extrabold uppercase leading-tight text-[#7A2E0E]">Headshot<br />placeholder</div>
+              ) : (
+                <div aria-hidden className="flex h-16 w-16 flex-none items-center justify-center rounded-full bg-[#0B1D3A] text-lg font-black text-white">JM</div>
+              )}
+              <div>
+                <p className="font-extrabold text-[#0B1D3A]">Jay McCarthy, founder of BippiBot</p>
+                <p className="text-sm text-[#5A6884]">Jay reviews every listing that comes in and leads every demo.</p>
+              </div>
+            </div>
           </div>
-          <p className="text-right"><span className="text-3xl font-black text-[#0B1D3A]">$149</span><span className="font-bold text-[#5A6884]">/mo</span><br /><span className="text-xs font-semibold text-[#5A6884]">founding rate</span></p>
+          <LeadForm variant="kit" id={KIT_FORM_ID} turnaround={TURNAROUND} turnaroundFlag={!TURNAROUND_CONFIRMED} />
         </div>
+      </section>
 
-        <p className="mt-5 text-center text-sm text-[#5A6884]">
-          What an active month costs at standard rates: one standard listing, <strong>$690</strong>. One luxury listing, <strong>$890</strong>.
-        </p>
-        <div className="mt-8 text-center"><Cta placement="pricing">Book a 15-minute demo</Cta></div>
+      {/* 6. PRICING */}
+      <section id="pricing" className="mx-auto max-w-4xl px-5 py-16 sm:px-6 lg:py-20">
+        <div className="text-center">
+          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#C43A18]">Pricing</p>
+          <h2 className="mt-2 text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">Start with one free listing</h2>
+        </div>
+        <div className="mt-8 rounded-3xl bg-[#D63D1A] px-6 py-5 text-center text-white shadow-lg">
+          <p className="text-lg font-black sm:text-xl">Founding offer: your first listing is free, and the $495 setup is waived.</p>
+        </div>
+        <dl className="mt-6 divide-y divide-[var(--line-200)] rounded-3xl border border-[var(--line-200)] bg-white">
+          <div className="flex flex-wrap items-baseline justify-between gap-2 p-5">
+            <dt className="font-extrabold text-[#0B1D3A]">Setup <span className="font-medium text-[#5A6884]">· one time</span></dt>
+            <dd className="text-right"><span className="text-2xl font-black text-[#0B1D3A]">$495</span> <span className="text-sm font-extrabold text-[#C43A18]">waived for founding agents</span></dd>
+          </div>
+          <div className="flex flex-wrap items-baseline justify-between gap-2 p-5">
+            <dt className="font-extrabold text-[#0B1D3A]">Monthly engine <span className="font-medium text-[#5A6884]">· per agent</span></dt>
+            <dd className="text-right"><span className="text-2xl font-black text-[#0B1D3A]">$395</span><span className="font-bold text-[#5A6884]">/mo</span></dd>
+          </div>
+          <div className="flex flex-wrap items-baseline justify-between gap-2 p-5">
+            <dt className="font-extrabold text-[#0B1D3A]">Per listing <span className="font-medium text-[#5A6884]">· $495 for listings $1M and up</span></dt>
+            <dd className="text-right"><span className="text-2xl font-black text-[#0B1D3A]">$295</span> <span className="text-sm font-extrabold text-[#C43A18]">first listing free</span></dd>
+          </div>
+        </dl>
+        <p className="mt-4 text-center font-extrabold text-[#0B1D3A]">Month to month. Cancel anytime.</p>
+        <details className="group mt-5 rounded-2xl border border-[var(--line-200)] bg-[#F2F5FA] p-5">
+          <summary className="flex cursor-pointer list-none items-center justify-between font-extrabold text-[#0B1D3A]">
+            Add-ons and an example month <span aria-hidden className="text-xl text-[#C43A18] transition group-open:rotate-45">+</span>
+          </summary>
+          <div className="mt-4 space-y-3 text-sm text-[#0E1B33]">
+            <p><b>Monthly Market Newsletter add-on: $149/mo.</b> A branded monthly email to your past clients and sphere: a local market snapshot, your new listings and solds, and a &ldquo;thinking of selling?&rdquo; prompt. You approve it before it sends.</p>
+            <p><b>Example active month at standard rates:</b> one standard listing, $690. One luxury listing, $890.</p>
+            <p>Paid ad spend is separate. Photography, drone, and on-site filming are not included.</p>
+          </div>
+        </details>
+        <div className="mt-8 rounded-3xl border border-[var(--line-200)] p-6">
+          <h3 className="text-xl font-extrabold text-[#0B1D3A]">What this replaces</h3>
+          <ul className="mt-4 space-y-3 text-[#0E1B33]">
+            <li className="flex gap-3"><Check />A freelance videographer or video editor for the tour video</li>
+            <li className="flex gap-3"><Check />A virtual assistant to design, write, and schedule the posts</li>
+            <li className="flex gap-3"><Check />Your own evenings building it all yourself</li>
+          </ul>
+          <p className="mt-4 text-sm text-[#5A6884]">Hiring those out for every listing typically costs far more than one listing fee.</p>
+          <Placeholder className="mt-4" title="Verified comparison numbers (optional)" need="If you want dollar figures here, supply sourced, typical Florida rates for a listing videographer/editor and a social media VA. Otherwise the neutral wording above stays." />
+        </div>
+        <div className="mt-8 text-center"><PrimaryCta placement="pricing" /></div>
+      </section>
+
+      {/* Secondary path: demo with a live calendar */}
+      <section id={DEMO_ID} className="relative overflow-hidden bg-[#0B1D3A] py-16 text-white lg:py-20">
+        <div className="relative mx-auto grid max-w-6xl items-start gap-10 px-5 sm:px-6 lg:grid-cols-2">
+          <div>
+            <h2 className="text-3xl font-black leading-tight tracking-tight sm:text-5xl">Prefer to talk? Book a 15-minute demo.</h2>
+            <p className="mt-4 text-lg text-[#C9D3E4]">With Jay McCarthy, founder of BippiBot. We&apos;ll walk through a real launch kit and show you how approvals work.</p>
+            <ul className="mt-6 space-y-3 text-[#E6ECF5]">
+              <li className="flex gap-3"><Check dark />You approve all content before it posts</li>
+              <li className="flex gap-3"><Check dark />Copy describes the property, never the buyer</li>
+              <li className="flex gap-3"><Check dark />Your brand on everything, not ours</li>
+            </ul>
+          </div>
+          {cal ? (
+            <div className="overflow-hidden rounded-3xl bg-white shadow-2xl">
+              <iframe src={cal} title="Book a 15-minute demo with Jay McCarthy" loading="lazy" className="h-[640px] w-full border-0" />
+            </div>
+          ) : (
+            <div>
+              <Placeholder dark className="mb-4" title="Live calendar (Cal.com)" need="Set BOOKING_URL in lib/booking.ts to Jay's Cal.com link and the calendar embeds here automatically. Until then, the short form below is the fallback." />
+              <LeadForm variant="demo" id="demo-form" turnaround={TURNAROUND} turnaroundFlag={!TURNAROUND_CONFIRMED} />
+            </div>
+          )}
+        </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="bg-[#F2F5FA] py-16 lg:py-24">
+      <section id="faq" className="bg-[#F2F5FA] py-16 lg:py-20">
         <div className="mx-auto max-w-3xl px-5 sm:px-6">
           <h2 className="text-center text-3xl font-black tracking-tight text-[#0B1D3A] sm:text-5xl">Questions agents ask</h2>
           <div className="mt-8 space-y-3">
@@ -387,34 +432,37 @@ export default function SocialOnSteroidsPage() {
                   {f.question}
                   <span aria-hidden className="text-xl text-[#C43A18] transition group-open:rotate-45">+</span>
                 </summary>
-                <p className="mt-3 text-[#5A6884]">{f.answer}</p>
+                <p className="mt-3 text-[#5A6884]">{f.answer}{"turnaround" in f && f.turnaround ? <Flag /> : null}</p>
               </details>
             ))}
           </div>
+          <div className="mt-10 text-center"><PrimaryCta placement="faq" /></div>
         </div>
       </section>
 
-      {/* DEMO FORM */}
-      <section id="demo" className="relative overflow-hidden bg-[#0B1D3A] py-16 text-white lg:py-24">
-        <div aria-hidden className="pointer-events-none absolute -left-40 bottom-0 h-[480px] w-[480px] rounded-full bg-[#D63D1A]/20 blur-3xl" />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 sm:px-6 lg:grid-cols-2">
+      {/* 7 + 11. MINIMAL FOOTER */}
+      <footer className="bg-[#0B1D3A] text-[#C9D3E4]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>
-            <h2 className="text-4xl font-black leading-tight tracking-tight sm:text-5xl">
-              Book a <span className="text-[#FF5A36]">15-minute demo</span>
-            </h2>
-            <p className="mt-4 text-lg text-[#C9D3E4]">With Jay McCarthy, founder of BippiBot. We&apos;ll walk through a real listing package and show you how approvals work.</p>
-            <ul className="mt-6 space-y-3 text-[#E6ECF5]">
-              <li className="flex gap-3"><Check />You approve all content before it posts</li>
-              <li className="flex gap-3"><Check />Copy describes the property, never the buyer</li>
-              <li className="flex gap-3"><Check />Your brand on everything, not ours</li>
-            </ul>
-            <div className="mt-8 lg:hidden"><Cta placement="demo-section">Fill in the form ↓</Cta></div>
+            <p className="font-bold text-white">BippiBot</p>
+            <p>Powered by BippiBot, a StreamCities company. &copy; {new Date().getFullYear()} StreamCities, LLC.</p>
           </div>
-          <DemoForm />
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            <li><a href="tel:+17754417200" className="hover:text-white">(775) 441-7200</a></li>
+            <li><a href="mailto:support@bippibot.com" className="hover:text-white">support@bippibot.com</a></li>
+            <li><Link href="/privacy-policy" className="underline underline-offset-2 hover:text-white">Privacy</Link></li>
+            <li><Link href="/terms-and-conditions" className="underline underline-offset-2 hover:text-white">Terms</Link></li>
+          </ul>
         </div>
-      </section>
+        {SHOW_PLACEHOLDERS ? (
+          <div className="mx-auto max-w-6xl px-5 pb-8 sm:px-6">
+            <Placeholder dark title="Footer brand info" need="Confirm the legal line (BippiBot, a StreamCities company; © StreamCities, LLC), the phone number to show Florida agents ((775) is a Nevada number), and whether to add a Florida business address." />
+          </div>
+        ) : null}
+      </footer>
 
       <StickyCta />
+      <Tracking />
     </div>
   );
 }
