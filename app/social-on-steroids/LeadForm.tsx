@@ -28,7 +28,11 @@ function readAttribution(): Record<string, string> {
 const input =
   "mt-1.5 w-full rounded-xl border border-[var(--line-200)] bg-white px-3.5 py-3 text-base text-[var(--navy-900)] outline-none placeholder:text-[var(--slate-500)] focus:border-[#D63D1A] focus:shadow-[0_0_0_3px_rgba(214,61,26,0.18)] aria-[invalid=true]:border-red-500";
 
-type Field = "name" | "email" | "phone" | "listing";
+type Field = "name" | "email" | "phone" | "listing" | "consent";
+
+/** Photo-rights consent, required on the free listing kit form (checked again server-side in /api/submit-lead). */
+const CONSENT_TEXT =
+  "I have the rights to the listing photos and details I send, and I authorize BippiBot to use them to market my listings.";
 type Errors = Partial<Record<Field, string>>;
 
 type Variant = "kit" | "demo";
@@ -77,6 +81,7 @@ export default function LeadForm({
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) e.email = "Please enter a valid email.";
     if (phone.length < 10 || phone.length > 15) e.phone = "Please enter a phone number with area code.";
     if (variant === "kit" && String(data.get("listing") || "").trim().length < 5) e.listing = "Please paste the listing link or the address.";
+    if (variant === "kit" && data.get("consent") !== "yes") e.consent = "Please check the box to confirm you have the rights to these photos and details.";
     return e;
   }
 
@@ -102,6 +107,7 @@ export default function LeadForm({
     try { cta = sessionStorage.getItem(CTA_KEY) || ""; } catch {}
     const attr = { ...attribution.current, ...readAttribution() };
     const tracking = Object.entries(attr).filter(([, v]) => v).map(([k, v]) => `${k}=${v}`).join("; ");
+    const consent = variant === "kit" ? { photo_consent: true, photo_consent_at: new Date().toISOString(), photo_consent_text: CONSENT_TEXT } : {};
     const message = variant === "kit" ? `Free listing kit request. Listing: ${listing}` : "Demo request (calendar not connected yet).";
     try {
       const res = await fetch("/api/submit-lead", {
@@ -113,8 +119,8 @@ export default function LeadForm({
           email,
           phone: String(data.get("phone")).trim(),
           source: c.source,
-          notes: [message, brokerage ? `Brokerage: ${brokerage}` : "", cta ? `CTA: ${cta}` : "", tracking ? `Tracking: ${tracking}` : ""].filter(Boolean).join("\n"),
-          custom_fields: { form: c.form, cta, listing, brokerage, message, ...attr },
+          notes: [message, brokerage ? `Brokerage: ${brokerage}` : "", cta ? `CTA: ${cta}` : "", tracking ? `Tracking: ${tracking}` : "", variant === "kit" ? `Photo consent: yes (${consent.photo_consent_at})` : ""].filter(Boolean).join("\n"),
+          custom_fields: { form: c.form, cta, listing, brokerage, message, ...attr, ...consent },
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
@@ -202,6 +208,16 @@ export default function LeadForm({
           <input id={`${id}-brokerage`} name="brokerage" maxLength={120} autoComplete="organization" placeholder="Your brokerage" className={input} />
         </div>
       </div>
+      {variant === "kit" ? (
+        <div className="mt-5">
+          <label htmlFor={`${id}-consent`} className="flex items-start gap-3 text-sm leading-snug text-[var(--navy-900)]">
+            <input id={`${id}-consent`} name="consent" type="checkbox" value="yes" required
+              className="mt-0.5 h-5 w-5 shrink-0 accent-[#D63D1A]" {...aria("consent")} />
+            <span>{CONSENT_TEXT}</span>
+          </label>
+          {err("consent")}
+        </div>
+      ) : null}
       {status === "error" ? (
         <p role="alert" className="mt-4 text-sm font-semibold text-red-600">Sorry, that didn&apos;t go through. Please try again, or email support@bippibot.com.</p>
       ) : null}
